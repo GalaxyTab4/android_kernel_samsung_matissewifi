@@ -9000,8 +9000,8 @@ static struct cfg80211_ops wlan_hdd_cfg80211_ops =
      .update_ft_ies = wlan_hdd_cfg80211_update_ft_ies,
 #endif
 #ifdef FEATURE_WLAN_TDLS
-     .tdls_mgmt = wlan_hdd_cfg80211_tdls_mgmt,
-     .tdls_oper = wlan_hdd_cfg80211_tdls_oper,
+/*  initialization from incompatible pointer type  ->  .tdls_mgmt = wlan_hdd_cfg80211_tdls_mgmt,*/
+      .tdls_oper = wlan_hdd_cfg80211_tdls_oper,
 #endif
 #ifdef WLAN_FEATURE_GTK_OFFLOAD
      .set_rekey_data = wlan_hdd_cfg80211_set_rekey_data,
