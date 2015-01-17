@@ -74,6 +74,10 @@
 #include <mach/msm8x26-thermistor.h>
 #endif
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+#include <linux/memblock.h>
+#endif
+
 #ifdef CONFIG_LEDS_MAX77804K
 #include <linux/leds-max77804k.h>
 #endif
@@ -127,7 +131,6 @@ struct max77804k_led_platform_data max77804k_led_pdata = {
 	.leds[1].cntrl_mode = MAX77804K_LED_CTRL_BY_FLASHSTB,
 	.leds[1].brightness = 0x06,
 };
-#endif
 
 static struct memtype_reserve msm8226_reserve_table[] __initdata = {
 	[MEMTYPE_SMI] = {
@@ -200,11 +203,21 @@ static void __init msm8226_early_memory(void)
 
 static void __init msm8226_reserve(void)
 {
+#ifdef CONFIG_KEXEC_HARDBOOT
+	int ret;
+#endif
 	reserve_info = &msm8226_reserve_info;
 	of_scan_flat_dt(dt_scan_for_memory_reserve, msm8226_reserve_table);
 	msm_reserve();
 #ifdef CONFIG_ANDROID_PERSISTENT_RAM
 	persistent_ram_early_init(&per_ram);
+#endif
+#ifdef CONFIG_KEXEC_HARDBOOT
+	ret = memblock_remove(KEXEC_HB_PAGE_ADDR, SZ_1M);
+	if(!ret)
+		pr_info("Hardboot page reserved at 0x%lu\n", KEXEC_HB_PAGE_ADDR);
+	else
+		pr_err("Failed to reserve space for hardboot page at 0x%lu!\n", KEXEC_HB_PAGE_ADDR);
 #endif
 }
 
