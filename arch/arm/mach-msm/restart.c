@@ -516,19 +516,29 @@ late_initcall(msm_pmic_restart_init);
 #ifdef CONFIG_KEXEC_HARDBOOT
 static void msm_kexec_hardboot_hook(void)
 {
+#ifdef CONFIG_RESTART_REASON_DDR
+	unsigned int save_restart_reason;
+#endif
+
+#ifdef CONFIG_SEC_DEBUG
+	if (!restart_reason)
+		restart_reason = ioremap_nocache((unsigned long)(MSM_IMEM_BASE \
+							+ RESTART_REASON_ADDR), SZ_4K);
+#endif
 	set_dload_mode(0);
 
 	// Set PMIC to restart-on-poweroff
 	pm8xxx_reset_pwr_off(1);
 
-	// These are executed on normal reboot, but with kexec-hardboot,
-	// they reboot/panic the system immediately.
-#if 0
-	qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
+	__raw_writel(0x12345678, restart_reason);
 
-	/* Needed to bypass debug image on some chips */
-	msm_disable_wdog_debug();
-	halt_spmi_pmic_arbiter();
+#ifdef CONFIG_RESTART_REASON_DDR
+	if(restart_reason_ddr_address) {
+		 save_restart_reason = __raw_readl(restart_reason);
+		/* Writting NORMAL BOOT magic number to DDR address*/
+		__raw_writel(save_restart_reason, restart_reason_ddr_address);
+		printk(KERN_NOTICE "%s: writting 0x%x to DDR restart reason address \n", __func__,__raw_readl(restart_reason_ddr_address));
+	}
 #endif
 }
 #endif
