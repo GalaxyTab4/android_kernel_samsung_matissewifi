@@ -509,11 +509,7 @@ bool blk_rq_merge_ok(struct request *rq, struct bio *bio)
 	/* only merge integrity protected bio into ditto rq */
 	if (bio_integrity(bio) != blk_integrity_rq(rq))
 		return false;
-#ifdef FUCKER
-	/* Don't merge bios of files with different encryption */
-	if (!security_allow_merge_bio(rq->bio, bio))
-		return false;
-#endif
+
 	return true;
 }
 
