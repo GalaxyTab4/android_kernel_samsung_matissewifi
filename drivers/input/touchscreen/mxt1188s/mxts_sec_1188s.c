@@ -1561,7 +1561,7 @@ struct tsp_cmd {
 	const char		*cmd_name;
 	void			(*cmd_func)(void *device_data);
 };
-
+#ifdef DVFS_FUCKER
 #if TSP_BOOSTER
 static void boost_level(void *device_data)
 {
@@ -1607,7 +1607,7 @@ static void boost_level(void *device_data)
 	return;
 }
 #endif
-
+#endif
 static struct tsp_cmd tsp_cmds[] = {
 	{TSP_CMD("fw_update", fw_update),},
 	{TSP_CMD("get_fw_ver_bin", get_fw_ver_bin),},
@@ -1637,8 +1637,10 @@ static struct tsp_cmd tsp_cmds[] = {
 	{TSP_CMD("set_tk_threshold", set_tk_threshold),},
 #endif
 #endif
+#ifdef DVFS_FUCKER
 #if TSP_BOOSTER
 	{TSP_CMD("boost_level", boost_level),},
+#endif
 #endif
 #if TSP_PATCH
 	{TSP_CMD("patch_update", patch_update),},
@@ -2045,7 +2047,7 @@ static ssize_t touchkey_report_dummy_key_store(struct device *dev,
 
 	return size;
 }
-
+#ifdef DVFS_FUCKER
 #if MXT_TKEY_BOOSTER
 static ssize_t boost_level_store(struct device *dev,
 				   struct device_attribute *attr,
@@ -2090,7 +2092,7 @@ static ssize_t boost_level_store(struct device *dev,
 	return count;
 }
 #endif
-
+#endif
 static DEVICE_ATTR(touchkey_d_menu, S_IRUGO | S_IWUSR | S_IWGRP, touchkey_d_menu_show, NULL);
 static DEVICE_ATTR(touchkey_d_back, S_IRUGO | S_IWUSR | S_IWGRP, touchkey_d_back_show, NULL);
 static DEVICE_ATTR(touchkey_recent, S_IRUGO | S_IWUSR | S_IWGRP, touchkey_recent_show, NULL);
@@ -2748,7 +2750,7 @@ static void  mxt_sysfs_remove(struct mxt_data *data)
 	mxt_exit_factory(data);
 #endif
 }
-
+#ifdef DVFS_FUCKER
 #if TSP_BOOSTER
 static void mxt_change_dvfs_lock(struct work_struct *work)
 {
@@ -2873,6 +2875,9 @@ void mxt_init_dvfs(struct mxt_data *data)
 	data->dvfs_lock_status = false;
 }
 #endif
+#endif
+
+#ifdef DVFS_FUCKER
 #if MXT_TKEY_BOOSTER
 static void mxt_tkey_change_dvfs_lock(struct work_struct *work)
 {
@@ -2961,4 +2966,5 @@ void mxt_tkey_init_dvfs(struct mxt_data *data)
 
 	data->tkey_dvfs_lock_status = true;
 }
+#endif
 #endif
