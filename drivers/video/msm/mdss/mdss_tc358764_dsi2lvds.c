@@ -48,7 +48,7 @@ static int err_fg_working;
 static int lcd_attached;
 static int lcd_id;
 int get_lcd_attached(void);
-extern int system_rev;
+//extern int system_rev;
 void __iomem *virt_mmss_gp0_base;
 #define MMSS_GP0_BASE 0xFD8C3420
 #define MMSS_GP0_SIZE  0x28
@@ -849,14 +849,16 @@ static int mdss_panel_parse_dt_gpio(struct device_node *np,
 			gpio_free(msd.bl_ldi_en);
 
 		} else {
-			if(system_rev>4)
+//			if(system_rev>4)
 			rc = gpio_tlmm_config(GPIO_CFG(msd.bl_ldi_en, 0,
 					GPIO_CFG_INPUT,GPIO_CFG_PULL_DOWN,GPIO_CFG_2MA),
 					GPIO_CFG_DISABLE);
+#ifdef REV_FUCKER
 			else
 				rc = gpio_tlmm_config(GPIO_CFG(msd.bl_ldi_en, 0,
 					GPIO_CFG_INPUT,GPIO_CFG_NO_PULL,GPIO_CFG_2MA),
 					GPIO_CFG_ENABLE);
+#endif
 			if (rc)
 				pr_err("tlmm config bl_ldi_en failed, rc=%d\n",rc);
 		}
