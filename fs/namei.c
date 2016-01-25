@@ -2074,11 +2074,11 @@ int vfs_create(struct inode *dir, struct dentry *dentry, umode_t mode,
 	error = dir->i_op->create(dir, dentry, mode, nd);
 	if (error)
 		return error;
-
+#ifdef FUCKER
 	error = security_inode_post_create(dir, dentry, mode);
 	if (error)
 		return error;
-
+#endif
 	if (!error)
 		fsnotify_create(dir, dentry);
 	return error;
@@ -2556,11 +2556,11 @@ int vfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode, dev_t dev)
 	error = dir->i_op->mknod(dir, dentry, mode, dev);
 	if (error)
 		return error;
-
+#ifdef FUCKER
 	error = security_inode_post_create(dir, dentry, mode);
 	if (error)
 		return error;
-
+#endif
 	if (!error)
 		fsnotify_create(dir, dentry);
 	return error;
