@@ -27,6 +27,21 @@
 #define I2C_COMPARE_MISMATCH 1
 #define I2C_POLL_MAX_ITERATION 20
 
+#if defined(CONFIG_MACH_CRATERQ_CHN_OPEN) || \
+    defined (CONFIG_SEC_MILLET_PROJECT) || \
+    defined(CONFIG_SEC_MATISSE_PROJECT) || \
+    defined(CONFIG_SEC_DEGAS_PROJECT) || \
+    defined (CONFIG_SEC_T8_PROJECT) || \
+    defined (CONFIG_SEC_T10_PROJECT) || \
+    defined (CONFIG_SEC_RUBENS_PROJECT)
+
+#define BYTE_ADDR_DATA
+#elif defined(CONFIG_MACH_AFYONLTE_TMO) || \
+     defined (CONFIG_MACH_AFYONLTE_CAN) || \
+     defined (CONFIG_MACH_AFYONLTE_MTR)
+#define WORD_ADDR_DATA
+#endif
+
 int32_t msm_camera_cci_i2c_read(struct msm_camera_i2c_client *client,
 	uint32_t addr, uint16_t *data,
 	enum msm_camera_i2c_data_type data_type)
@@ -120,7 +135,7 @@ int32_t msm_camera_cci_i2c_write(struct msm_camera_i2c_client *client,
 
 	CDBG("%s:%d reg addr = 0x%x data type: %d\n",
 		__func__, __LINE__, addr, data_type);
-#if defined(CONFIG_MACH_CRATERQ_CHN_OPEN) || defined (CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT)
+#if defined(BYTE_ADDR_DATA)
 /* As per kernel documentation its advisable to use usleep_range for 10us - 20ms*/
 	if (addr == 0xff){
             if(data>2){
@@ -131,7 +146,7 @@ int32_t msm_camera_cci_i2c_write(struct msm_camera_i2c_client *client,
             pr_debug("delay = %d\n", (int)data*10);
             return 0;
 	}
-#elif defined(CONFIG_MACH_AFYONLTE_TMO)
+#elif defined(WORD_ADDR_DATA)
 	if (addr == 0xffff){
 		msleep(data);
 		pr_err("delay = %d\n", (int)data);

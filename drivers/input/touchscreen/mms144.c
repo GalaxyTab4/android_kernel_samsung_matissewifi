@@ -59,8 +59,6 @@
 #define MAX_FINGERS		10
 #define MAX_WIDTH		30
 #define MAX_PRESSURE		255
-#define MAX_ANGLE		90
-#define MIN_ANGLE		-90
 
 /* Registers */
 #define MMS_MODE_CONTROL	0x01
@@ -303,13 +301,11 @@ struct mms_ts_info {
 
 	char				*fw_name;
 	struct early_suspend		early_suspend;
-#ifdef CONFIG_SEC_DVFS
 #if TOUCH_BOOSTER
 	struct delayed_work work_dvfs_off;
 	struct delayed_work	work_dvfs_chg;
 	bool	dvfs_lock_status;
 	struct mutex dvfs_lock;
-#endif
 #endif
 
 	/* protects the enabled flag */
@@ -546,7 +542,6 @@ int is_melfas_vdd_on(struct mms_ts_info *info)
 	return 0;
 }
 
-#ifdef CONFIG_SEC_DVFS
 #if TOUCH_BOOSTER
 static void change_dvfs_lock(struct work_struct *work)
 {
@@ -604,7 +599,6 @@ static void set_dvfs_lock(struct mms_ts_info *info, uint32_t on)
 	mutex_unlock(&info->dvfs_lock);
 }
 #endif
-#endif
 
 static void release_all_fingers(struct mms_ts_info *info)
 {
@@ -627,11 +621,9 @@ static void release_all_fingers(struct mms_ts_info *info)
 					   false);
 	}
 	input_sync(info->input_dev);
-#ifdef CONFIG_SEC_DVFS
 #if TOUCH_BOOSTER
 	set_dvfs_lock(info, 2);
 	pr_info("[TSP] dvfs_lock free.\n ");
-#endif
 #endif
 }
 
@@ -849,7 +841,6 @@ static irqreturn_t mms_ts_interrupt(int irq, void *dev_id)
 #endif
 		input_report_abs(info->input_dev, ABS_MT_TOUCH_MAJOR, tmp[6]);
 		input_report_abs(info->input_dev, ABS_MT_TOUCH_MINOR, tmp[7]);
-		input_report_abs(info->input_dev, ABS_MT_ANGLE, angle);
 		input_report_abs(info->input_dev, ABS_MT_PALM, palm);
 #if defined(SEC_TSP_DEBUG)
 		if (info->finger_state[id] == 0) {
@@ -875,10 +866,8 @@ static irqreturn_t mms_ts_interrupt(int irq, void *dev_id)
 			touch_is_pressed++;
 	}
 
-#ifdef CONFIG_SEC_DVFS
 #if TOUCH_BOOSTER
 	set_dvfs_lock(info, !!touch_is_pressed);
-#endif
 #endif
 
 out:
@@ -1396,7 +1385,7 @@ int mms100_ISC_download_mbinary(struct mms_ts_info *info)
 
 	pr_info("[TSP ISC] %s\n", __func__);
 
-	mms100_reset(info);
+	mms_pwr_on_reset(info);
 /*
 	ret_msg = mms100_check_operating_mode(_client, EC_BOOT_ON_SUCCEEDED);
 	if (ret_msg != ISC_SUCCESS)
@@ -2458,6 +2447,8 @@ static void fw_update(void *device_data)
 			&& fw_ver >= fw_bin_ver) {
 		dev_info(&client->dev,
 			"fw version update does not need\n");
+		snprintf(result_buff, sizeof(result_buff), "OK");
+		set_cmd_result(info, result_buff, strnlen(result_buff, sizeof(result_buff)));
 		goto do_not_need_update;
 	}
 
@@ -3348,7 +3339,7 @@ int __devinit mms_ts_probe(struct i2c_client *client,
 	if (!pdata)
 		return -EINVAL;
 
-	melfas_request_gpio(pdata);
+
 #endif
 	info = kzalloc(sizeof(struct mms_ts_info), GFP_KERNEL);
 	if (!info) {
@@ -3388,10 +3379,11 @@ int __devinit mms_ts_probe(struct i2c_client *client,
 		info->max_x = 720;
 		info->max_y = 1280;
 	}
-
+	i2c_set_clientdata(client, info);
 	melfas_vdd_on(info, 1);
 	msleep(100);
-	i2c_set_clientdata(client, info);
+	melfas_request_gpio(pdata);
+
 
 	info->callbacks.inform_charger = melfas_ta_cb;
 	if (info->register_cb)
@@ -3417,8 +3409,6 @@ int __devinit mms_ts_probe(struct i2c_client *client,
 				0, MAX_PRESSURE, 0, 0);
 	input_set_abs_params(info->input_dev, ABS_MT_TOUCH_MINOR,
 				0, MAX_PRESSURE, 0, 0);
-	input_set_abs_params(input_dev, ABS_MT_ANGLE,
-				MIN_ANGLE, MAX_ANGLE, 0, 0);
 	input_set_abs_params(input_dev, ABS_MT_PALM,
 				0, 1, 0, 0);
 	input_set_drvdata(input_dev, info);
@@ -3430,13 +3420,11 @@ int __devinit mms_ts_probe(struct i2c_client *client,
 		goto err_reg_input_dev;
 	}
 
-#ifdef CONFIG_SEC_DVFS
 #if TOUCH_BOOSTER
 	mutex_init(&info->dvfs_lock);
 	INIT_DELAYED_WORK(&info->work_dvfs_off, set_dvfs_off);
 	INIT_DELAYED_WORK(&info->work_dvfs_chg, change_dvfs_lock);
 	info->dvfs_lock_status = false;
-#endif
 #endif
 
 #if ISC_DL_MODE

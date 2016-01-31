@@ -207,6 +207,10 @@ config MIGRATION
 	  pages as migration can relocate pages to satisfy a huge page
 	  allocation instead of reclaiming.
 
+config SEC_SLOWPATH
+	bool "slowpath allocation"
+	def_bool n
+
 config PHYS_ADDR_T_64BIT
 	def_bool 64BIT || ARCH_PHYS_ADDR_T_64BIT
 
@@ -492,3 +496,18 @@ config USE_USER_ACCESSIBLE_TIMERS
 	  interface code in the main kernel.  However, there are
 	  architecture-specific code that will need to be enabled
 	  separately.
+
+config MIN_DIRTY_THRESH_PAGES
+	int "The lower bound of VM dirty_thresh value in number of pages"
+	default 2560
+	help
+	  Setting this to certain positive number guaranttees
+	  the VM Dirty-Thresh valus is always larger than that value.
+	  It is only effective when dirty_ratio is used. (Setting dirty_bytes
+	  disables this option.)
+	  Do not use it if you unsure.
+
+config SDP_CACHE_CLEANUP
+	bool "SDP requirement. cache cleanup"
+	depends on SDP
+	default n

@@ -78,8 +78,12 @@ static int __devinit vfe_probe(struct platform_device *pdev)
 		of_property_read_u32((&pdev->dev)->of_node,
 			"cell-index", &pdev->id);
 		match_dev = of_match_device(msm_vfe_dt_match, &pdev->dev);
-		vfe_dev->hw_info =
-			(struct msm_vfe_hardware_info *) match_dev->data;
+		if (match_dev != NULL) {
+			vfe_dev->hw_info =
+				(struct msm_vfe_hardware_info *) match_dev->data;
+		} else {
+			pr_err("%s: failed to match device\n", __func__);
+		}
 	} else {
 		vfe_dev->hw_info = (struct msm_vfe_hardware_info *)
 			platform_get_device_id(pdev)->driver_data;

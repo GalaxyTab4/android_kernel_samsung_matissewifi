@@ -2125,23 +2125,23 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x0F12, 0x0093,},    // awbb_GridCoeff_B_2
 {0x002A, 0x13A4,},
 {0x0F12, 0x0050,},
-{0x0F12, 0x0008,},
-{0x0F12, 0xFFF2,},
+{0x0F12, 0x0000,},
 {0x0F12, 0xFFEC,},
-{0x0F12, 0xFFE9,},
-{0x0F12, 0xFFFC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0x0000,},
 {0x0F12, 0x0050,},
-{0x0F12, 0x0008,},
-{0x0F12, 0xFFF2,},
+{0x0F12, 0x0000,},
 {0x0F12, 0xFFEC,},
-{0x0F12, 0xFFE9,},
-{0x0F12, 0xFFFC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0x0000,},
 {0x0F12, 0x0050,},
-{0x0F12, 0x0008,},
-{0x0F12, 0xFFF2,},
+{0x0F12, 0x0000,},
 {0x0F12, 0xFFEC,},
-{0x0F12, 0xFFE9,},
-{0x0F12, 0xFFFC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0xFFEC,},
+{0x0F12, 0x0000,},
 {0x0F12, 0xFF8C,},
 {0x0F12, 0x000A,},
 {0x0F12, 0x000A,},
@@ -2220,11 +2220,11 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x002A, 0x0F30,},
 {0x0F12, 0x0001,},   	//AFC_D_ConvAccelerPower
 {0x002A, 0x0F2A,},
-{0x0F12, 0x0000,},	//AFC_Default BIT[0] 1:60Hz 0:50Hz
+{0x0F12, 0x0001,},	//AFC_Default BIT[0] 1:60Hz 0:50Hz
 {0x002A, 0x04E6,},
 {0x0F12, 0x077F,},	//REG_TC_DBG 7F: 60Hz  5F:50Hz
 {0x002A, 0x1484,},
-{0x0F12, 0x003B,},	//TVAR_ae_BrAve//
+{0x0F12, 0x003C,},	//TVAR_ae_BrAve//
 {0x002A, 0x148A,},
 {0x0F12, 0x000F,},	//ae_StatMode//
 {0x002A, 0x0588,},
@@ -2415,42 +2415,42 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x0F12, 0x48D8,},
 {0x0F12, 0x7000,}, 	//TVAR_wbt_pOutdoorCcm
 {0x002A, 0x4800,},   // Horizon
-{0x0F12, 0x0208,},   //TVAR_wbt_pBaseCcms[0]
-{0x0F12, 0xFFB5,},   //TVAR_wbt_pBaseCcms[1]
-{0x0F12, 0xFFE8,},   //TVAR_wbt_pBaseCcms[2]
-{0x0F12, 0xFF20,},   //TVAR_wbt_pBaseCcms[3]
-{0x0F12, 0x01BF,},   //TVAR_wbt_pBaseCcms[4]
-{0x0F12, 0xFF53,},   //TVAR_wbt_pBaseCcms[5]
-{0x0F12, 0x0022,},   //TVAR_wbt_pBaseCcms[6]
-{0x0F12, 0xFFEA,},   //TVAR_wbt_pBaseCcms[7]
-{0x0F12, 0x01C2,},   //TVAR_wbt_pBaseCcms[8]
-{0x0F12, 0x00C6,},   //TVAR_wbt_pBaseCcms[9]
-{0x0F12, 0x0095,},   //TVAR_wbt_pBaseCcms[10]
-{0x0F12, 0xFEFD,},   //TVAR_wbt_pBaseCcms[11]
-{0x0F12, 0x0206,},   //TVAR_wbt_pBaseCcms[12]
-{0x0F12, 0xFF7F,},   //TVAR_wbt_pBaseCcms[13]
-{0x0F12, 0x0191,},   //TVAR_wbt_pBaseCcms[14]
-{0x0F12, 0xFF06,},   //TVAR_wbt_pBaseCcms[15]
-{0x0F12, 0x01BA,},   //TVAR_wbt_pBaseCcms[16]
-{0x0F12, 0x0108,},   //TVAR_wbt_pBaseCcms[17]
-{0x0F12, 0x0208,},		//TVAR_wbt_pBaseCcms[18]/* inca A */
-{0x0F12, 0xFFB5,},   //TVAR_wbt_pBaseCcms[19]
-{0x0F12, 0xFFE8,},   //TVAR_wbt_pBaseCcms[20]
-{0x0F12, 0xFF20,},   //TVAR_wbt_pBaseCcms[21]
-{0x0F12, 0x01BF,},   //TVAR_wbt_pBaseCcms[22]
-{0x0F12, 0xFF53,},   //TVAR_wbt_pBaseCcms[23]
-{0x0F12, 0x0022,},   //TVAR_wbt_pBaseCcms[24]
-{0x0F12, 0xFFEA,},   //TVAR_wbt_pBaseCcms[25]
-{0x0F12, 0x01C2,},   //TVAR_wbt_pBaseCcms[26]
-{0x0F12, 0x00C6,},   //TVAR_wbt_pBaseCcms[27]
-{0x0F12, 0x0095,},   //TVAR_wbt_pBaseCcms[28]
-{0x0F12, 0xFEFD,},   //TVAR_wbt_pBaseCcms[29]
-{0x0F12, 0x0206,},   //TVAR_wbt_pBaseCcms[30]
-{0x0F12, 0xFF7F,},   //TVAR_wbt_pBaseCcms[31]
-{0x0F12, 0x0191,},   //TVAR_wbt_pBaseCcms[32]
-{0x0F12, 0xFF06,},   //TVAR_wbt_pBaseCcms[33]
-{0x0F12, 0x01BA,},   //TVAR_wbt_pBaseCcms[34]
-{0x0F12, 0x0108,},   //TVAR_wbt_pBaseCcms[35]
+{0x0F12, 0x0252,}, //0280 //02CC //02D5 //02C2  //0208   //TVAR_wbt_pBaseCcms[0]
+{0x0F12, 0xFF8B,}, //FF71 //FF57 //FF53 //FF5D  //FFB5   //TVAR_wbt_pBaseCcms[1]
+{0x0F12, 0xFFC8,}, //FFB4 //FF81 //FF7D //FF86  //FFE8   //TVAR_wbt_pBaseCcms[2]
+{0x0F12, 0xFF01,}, //FEE5 //FEC7 //FEC2 //FECD  //FF20   //TVAR_wbt_pBaseCcms[3]
+{0x0F12, 0x01EB,}, //021A //024E //0257 //0244  //01BF   //TVAR_wbt_pBaseCcms[4]
+{0x0F12, 0xFF47,}, //FF33 //FF1D //FF19 //FF21  //FF53   //TVAR_wbt_pBaseCcms[5]
+{0x0F12, 0xFFDB,}, //FFC7 //FFA7 //FFA3 //FFAB  //0022   //TVAR_wbt_pBaseCcms[6]
+{0x0F12, 0xFFD9,}, //FFC5 //FFA5 //FFA1 //FFA9  //FFEA   //TVAR_wbt_pBaseCcms[7]
+{0x0F12, 0x021B,}, //0241 //0283 //028A //027A  //01C2   //TVAR_wbt_pBaseCcms[8]
+{0x0F12, 0x0102,}, //0119 //010F //0113 //010B  //00C6   //TVAR_wbt_pBaseCcms[9]
+{0x0F12, 0x00BF,}, //00D0 //0115 //0119 //0111  //0095   //TVAR_wbt_pBaseCcms[10]
+{0x0F12, 0xFE97,}, //FE6F //FE33 //FE2C //FE3C  //FEFD   //TVAR_wbt_pBaseCcms[11]
+{0x0F12, 0x0206,}, //0220 //022B //0230 //0226  //0206   //TVAR_wbt_pBaseCcms[12]
+{0x0F12, 0xFF57,}, //FF2A //FF16 //FF0F //FF1F  //FF7F   //TVAR_wbt_pBaseCcms[13]
+{0x0F12, 0x01BA,}, //01CC //01D4 //01D7 //01D0  //0191   //TVAR_wbt_pBaseCcms[14]
+{0x0F12, 0xFEF1,}, //FEC6 //FE84 //FE7D //FE8E  //FF06   //TVAR_wbt_pBaseCcms[15]
+{0x0F12, 0x016D,}, //0183 //01A4 //01A8 //019F  //01BA   //TVAR_wbt_pBaseCcms[16]
+{0x0F12, 0x0169,}, //017F //01A0 //01A4 //019B  //0108   //TVAR_wbt_pBaseCcms[17]
+{0x0F12, 0x0234,}, //0251 //0262 //0287 //0262  //0208		//TVAR_wbt_pBaseCcms[18]/* inca A */
+{0x0F12, 0xFF9A,}, //FF8B //FF82 //FF72 //FF82  //FFB5   //TVAR_wbt_pBaseCcms[19]
+{0x0F12, 0xFFD3,}, //FFC7 //FFC1 //FFAA //FFC1  //FFE8   //TVAR_wbt_pBaseCcms[20]
+{0x0F12, 0xFF11,}, //FF00 //FEF7 //FEE5 //FEF7  //FF20   //TVAR_wbt_pBaseCcms[21]
+{0x0F12, 0x01CC,}, //01EA //01FB //0218 //01FB  //01BF   //TVAR_wbt_pBaseCcms[22]
+{0x0F12, 0xFF53,}, //FF46 //FF40 //FF32 //FF40  //FF53   //TVAR_wbt_pBaseCcms[23]
+{0x0F12, 0xFFE6,}, //FFDA //FFD4 //FFC3 //FFD4  //0022   //TVAR_wbt_pBaseCcms[24]
+{0x0F12, 0xFFE4,}, //FFD8 //FFD2 //FFC1 //FFD2  //FFEA   //TVAR_wbt_pBaseCcms[25]
+{0x0F12, 0x0201,}, //0219 //0228 //0247 //0228  //01C2   //TVAR_wbt_pBaseCcms[26]
+{0x0F12, 0x00F2,}, //0101 //010A //010D //010A  //00C6   //TVAR_wbt_pBaseCcms[27]
+{0x0F12, 0x00B4,}, //00BF //00C5 //00DF //00C5  //0095   //TVAR_wbt_pBaseCcms[28]
+{0x0F12, 0xFEAD,}, //FE96 //FE89 //FE6A //FE89  //FEFD   //TVAR_wbt_pBaseCcms[29]
+{0x0F12, 0x01F6,}, //0205 //020F //0219 //020F  //0206   //TVAR_wbt_pBaseCcms[30]
+{0x0F12, 0xFF70,}, //FF55 //FF47 //FF33 //FF47  //FF7F   //TVAR_wbt_pBaseCcms[31]
+{0x0F12, 0x01AE,}, //01B9 //01C0 //01C7 //01C0  //0191   //TVAR_wbt_pBaseCcms[32]
+{0x0F12, 0xFF0B,}, //FEF1 //FEE2 //FEC0 //FEE2  //FF06   //TVAR_wbt_pBaseCcms[33]
+{0x0F12, 0x0160,}, //016D //0175 //0185 //0175  //01BA   //TVAR_wbt_pBaseCcms[34]
+{0x0F12, 0x015C,}, //0169 //0171 //0181 //0171  //0108   //TVAR_wbt_pBaseCcms[35]
 {0x0F12, 0x0208,},	  //TVAR_wbt_pBaseCcms[36] /*WW*/
 {0x0F12, 0xFFB5,},   //TVAR_wbt_pBaseCcms[37]
 {0x0F12, 0xFFE8,},   //TVAR_wbt_pBaseCcms[38]
@@ -2760,7 +2760,7 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x0F12, 0x1A02,},    //70000A18 AFIT8_yuviirnr_iYNRStrengthH   [7:0] AFIT8_yuviirnr_iUVNRStrengthL
 {0x0F12, 0x4A18,},    //70000A1A AFIT8_yuviirnr_iUVNRStrengthH   [7:0] AFIT8_byr_gras_iShadingPower
 {0x0F12, 0x0080,},    //70000A1C AFIT8_RGBGamma2_iLinearity   [7:0] AFIT8_RGBGamma2_iDarkReduce
-{0x0F12, 0x0350,},    //70000A1E AFIT8_ccm_oscar_iSaturation   [7:0] AFIT8_RGB2YUV_iYOffset
+{0x0F12, 0x0380,},  //0350  //70000A1E AFIT8_ccm_oscar_iSaturation   [7:0] AFIT8_RGB2YUV_iYOffset
 {0x0F12, 0x0180,},    //70000A20 AFIT8_RGB2YUV_iRGBGain   [7:0] AFIT8_bnr_nClustLevel_H
 {0x0F12, 0x0A0A,},    //70000A22 AFIT8_bnr_iClustMulT_H   [7:0] AFIT8_bnr_iClustMulT_C
 {0x0F12, 0x0101,},    //70000A24 AFIT8_bnr_iClustThresh_H   [7:0] AFIT8_bnr_iClustThresh_C
@@ -3245,7 +3245,7 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x002A, 0x024E,},
 {0x0F12, 0x0001,},	//REG_TC_GP_NewConfigSync
 {0x002A, 0x023E,},
-{0x0F12, 0x0000,},	//REG_TC_GP_EnablePreview
+{0x0F12, 0x0001,},	//REG_TC_GP_EnablePreview
 {0x0F12, 0x0001,},	//REG_TC_GP_EnablePreviewChanged
 {0x0028, 0x7000,},
 {0x002A, 0x01A8,},	//ESD Check
@@ -3254,7 +3254,6 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_init_regs[] = {
 {0x0F12, 0x0170,}, //bp_uMaxBrightnessFactor
 {0x002A, 0x1482,},
 {0x0F12, 0x01E0,}, //bp_uMinBrightnessFactor
-{0xFFFF, 0x00C8,},
 };
 
 static struct msm_camera_i2c_reg_conf s5k4ecgx_Effect_Normal[] = {
@@ -3288,15 +3287,16 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_Effect_Mono[] = {
 static struct msm_camera_i2c_reg_conf s5k4ecgx_WB_Auto[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
-{0x002A, 0x04E6,},
-{0x0F12, 0x077F,},
+//{0x002A, 0x04E6,},   // S/W Program */
+//{0x0F12, 0x077F,},
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Sunny[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
-{0x002A, 0x04E6,},
-{0x0F12, 0x0777,},
+//{0x002A, 0x04E6,},   // S/W Program */
+//{0x0F12, 0x0777,},
 {0x002A, 0x04BA,}, //R gain
 {0x0F12, 0x0568,},
 {0x002A, 0x04BE,}, //G gain
@@ -3305,13 +3305,14 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Sunny[] = {
 {0x0F12, 0x0608,}, //
 {0x002A, 0x04C6,}, //RGB gain changed
 {0x0F12, 0x0001,},
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Cloudy[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},	
-{0x002A, 0x04E6,},	
-{0x0F12, 0x0777,},
+//{0x002A, 0x04E6,},   // S/W Program */	
+//{0x0F12, 0x0777,},
 {0x002A, 0x04BA,},  //R gain                       
 {0x0F12, 0x0610,},
 {0x002A, 0x04BE,},  //G gain                      
@@ -3320,13 +3321,14 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Cloudy[] = {
 {0x0F12, 0x0560,},
 {0x002A, 0x04C6,},
 {0x0F12, 0x0001,},
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Tungsten[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
-{0x002A, 0x04E6,},
-{0x0F12, 0x0777,},
+//{0x002A, 0x04E6,},   // S/W Program */
+//{0x0F12, 0x0777,},
 {0x002A, 0x04BA,},
 {0x0F12, 0x03D0,},
 {0x002A, 0x04BE,},
@@ -3335,13 +3337,14 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Tungsten[] = {
 {0x0F12, 0x09A0,},
 {0x002A, 0x04C6,},
 {0x0F12, 0x0001,},
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Fluorescent[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
-{0x002A, 0x04E6,},
-{0x0F12, 0x0777,},
+//{0x002A, 0x04E6,},   // S/W Program */
+//{0x0F12, 0x0777,},
 {0x002A, 0x04BA,},  //R gain
 {0x0F12, 0x0540,},
 {0x002A, 0x04BE,},  //G gain
@@ -3350,6 +3353,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_WB_Fluorescent[] = {
 {0x0F12, 0x0860,}, 
 {0x002A, 0x04C6,},
 {0x0F12, 0x0001,},
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_Auto[] = {
@@ -3364,14 +3368,15 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_Auto[] = {
 {0x0F12, 0x1388,},		/*SARR_uNormBrInDoor_4_ */
 {0x002A, 0x0F2A,},		/*AFC_Default60Hz */
 {0x0F12, 0x0000,},		/*00:50Hz 01:60Hz */
-{0x002A, 0x04E6,},   // S/W Program */
-{0x0F12, 0x077F,}, 
+//{0x002A, 0x04E6,},   // S/W Program */
+//{0x0F12, 0x077F,}, 
 {0x002A, 0x04D0,},
 {0x0F12, 0x0000,},	  /*REG_SF_USER_IsoType */
 {0x0F12, 0x0000,},		/*REG_SF_USER_IsoVal */
 {0x0F12, 0x0001,},		/*REG_SF_USER_IsoChanged */
 {0x002A, 0x06C2,},
 {0x0F12, 0x0200,},	  /*lt_bUseSecISODgain */
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_50[] = {
@@ -3384,8 +3389,8 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_50[] = {
 {0x0F12, 0x0384,},		/*SARR_uNormBrInDoor_2_ */
 {0x0F12, 0x07D0,},		/*SARR_uNormBrInDoor_3_ */
 {0x0F12, 0x1388,},		/*SARR_uNormBrInDoor_4_ */
-{0x002A, 0x04E6,}, // S/W Program */
-{0x0F12, 0x065F,}, // */
+//{0x002A, 0x04E6,}, // S/W Program */
+//{0x0F12, 0x065F,}, // */
 {0x002A, 0x04D6,},
 {0x0F12, 0x0000,},	/*REG_SF_USER_FlickerQuant */
 {0x0F12, 0x0001,},		/*REG_SF_USER_FlickerQuantChanged */
@@ -3395,6 +3400,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_50[] = {
 {0x0F12, 0x0001,},		/*REG_SF_USER_IsoChanged */
 {0x002A, 0x06C2,},
 {0x0F12, 0x0100,},	/*lt_bUseSecISODgain */
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_100[] = {
@@ -3407,8 +3413,8 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_100[] = {
 {0x0F12, 0x0384,},		/*SARR_uNormBrInDoor_2_ */
 {0x0F12, 0x07D0,},		/*SARR_uNormBrInDoor_3_ */
 {0x0F12, 0x1388,},		/*SARR_uNormBrInDoor_4_ */
-{0x002A, 0x04E6,}, // S/W Program */
-{0x0F12, 0x065F,}, // */
+//{0x002A, 0x04E6,}, // S/W Program */
+//{0x0F12, 0x065F,}, // */
 {0x002A, 0x04D6,},
 {0x0F12, 0x0000,},	/*REG_SF_USER_FlickerQuant */
 {0x0F12, 0x0001,},		/*REG_SF_USER_FlickerQuantChanged */
@@ -3418,6 +3424,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_100[] = {
 {0x0F12, 0x0001,},		/*REG_SF_USER_IsoChanged */
 {0x002A, 0x06C2,},
 {0x0F12, 0x0100,},	/*lt_bUseSecISODgain */
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_200[] = {
@@ -3430,8 +3437,8 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_200[] = {
 {0x0F12, 0x0584,},		/*SARR_uNormBrInDoor_2_ */
 {0x0F12, 0x08D0,},		/*SARR_uNormBrInDoor_3_ */
 {0x0F12, 0x1388,},		/*SARR_uNormBrInDoor_4_ */
-{0x002A, 0x04E6,}, // S/W Program */
-{0x0F12, 0x065F,}, // */
+//{0x002A, 0x04E6,}, // S/W Program */
+//{0x0F12, 0x065F,}, // */
 {0x002A, 0x04D6,},
 {0x0F12, 0x0000,},	/*REG_SF_USER_FlickerQuant */
 {0x0F12, 0x0001,},		/*REG_SF_USER_FlickerQuantChanged */
@@ -3441,6 +3448,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_200[] = {
 {0x0F12, 0x0001,},		/*REG_SF_USER_IsoChanged */
 {0x002A, 0x06C2,},
 {0x0F12, 0x0100,},	/*lt_bUseSecISODgain */
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_400[] = {
@@ -3453,8 +3461,8 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_400[] = {
 {0x0F12, 0x0C84,},		/*SARR_uNormBrInDoor_2_ */
 {0x0F12, 0x10D0,},		/*SARR_uNormBrInDoor_3_ */
 {0x0F12, 0x1388,},		/*SARR_uNormBrInDoor_4_ */
-{0x002A, 0x04E6,}, // S/W Program */
-{0x0F12, 0x065F,}, // */
+//{0x002A, 0x04E6,}, // S/W Program */
+//{0x0F12, 0x065F,}, // */
 {0x002A, 0x04D6,},
 {0x0F12, 0x0000,},	/*REG_SF_USER_FlickerQuant */
 {0x0F12, 0x0001,},		/*REG_SF_USER_FlickerQuantChanged */
@@ -3464,6 +3472,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_ISO_400[] = {
 {0x0F12, 0x0001,},		/*REG_SF_USER_IsoChanged */
 {0x002A, 0x06C2,},
 {0x0F12, 0x0100,},	/*lt_bUseSecISODgain */
+{0xFFFF, 0x000A,}, /*Delay 10ms*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_Metering_Matrix[] = {
@@ -3619,7 +3628,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_EV_Default[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
 {0x002A, 0x1484,},
-{0x0F12, 0x003B,},		/*TVAR_ae_BrAve */
+{0x0F12, 0x003C,},		/*TVAR_ae_BrAve */
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_EV_Plus_1[] = {
@@ -3702,7 +3711,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_Scene_Default[] = {
 {0x0F12, 0x452C,},
 {0x0F12, 0x0005,},	/*lt_uMaxLei */
 {0x002A, 0x0A1E,},
-{0x0F12, 0x0350,},/*_ccm_oscar_iSaturation [7:0] AFIT8_RGB2YUV_iYOffset init */
+{0x0F12, 0x0380,},/* 0350_ccm_oscar_iSaturation [7:0] AFIT8_RGB2YUV_iYOffset init */
 {0x002A, 0x0638,},
 {0x0F12, 0x0001,},
 {0x0F12, 0x0000,},/*lt_ExpGain_ExpCurveGainMaxStr_0__ulExpOut_0_ */
@@ -3725,7 +3734,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_Scene_Default[] = {
 {0x0F12, 0xC350,},
 {0x0F12, 0x0000,},/*lt_ExpGain_ExpCurveGainMaxStr_0__ulExpOut_9_ */
 {0x002A, 0x02C2,},
-{0x0F12, 0x029A,},/*REG_0TC_PCFG_usMaxFrTimeMsecMult10 *//*029Ah:15fps */
+{0x0F12, 0x03E8,},/*REG_0TC_PCFG_usMaxFrTimeMsecMult10 *//*029Ah:15fps */
 {0x0F12, 0x014A,},/*REG_0TC_PCFG_usMinFrTimeMsecMult10 *//*014Ah:30fps */
 {0x002A, 0x03B4,},
 {0x0F12, 0x0535,},/*REG_0TC_CCFG_usMaxFrTimeMsecMult10 *//*0535h:7.5fps */
@@ -4145,43 +4154,6 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_preview_regs[] ={
 {0x0F12, 0x0001,}, //REG_TC_GP_EnableCaptureChanged
 };
 
-static struct msm_camera_i2c_reg_conf s5k4ecgx_stream_stop_reg[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x023E,},
-{0x0F12, 0x0000,}, //REG_TC_GP_EnablePreview		<- Preview 0:Stop 1:run
-{0x0F12, 0x0001,}, //REG_TC_GP_EnablePreviewChanged
-{0xFFFF, 0x00C8,},
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_capture_2560_1920[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x0258,},
-{0x0F12, 0x0A00,},		/*REG_TC_GP_CapReqInputWidth 2560 */
-{0x0F12, 0x0780,},		/*REG_TC_GP_CapReqInputHeight 1920 */
-{0x0F12, 0x0010,},		/*REG_TC_GP_CapInputWidthOfs (2592-2560)/2 */
-{0x0F12, 0x000C,},		/*REG_TC_GP_CapInputHeightOfs (1944-1920)/2 */
-{0x002A, 0x0264,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_bUseReqInputInCap */
-{0x002A, 0x049C,},
-{0x0F12, 0x0A00,},		/*REG_TC_PZOOM_CapZoomReqInputWidth 2560 */
-{0x0F12, 0x0780,},		/*REG_TC_PZOOM_CapZoomReqInputHeight 1920 */
-{0x0F12, 0x0000,},		/*REG_TC_PZOOM_CapZoomReqInputWidthOfs */
-{0x0F12, 0x0000,},		/*REG_TC_PZOOM_CapZoomReqInputHeightOfs */
-{0x002A, 0x047C,},
-{0x0F12, 0x0001,},		/*REG_TC_THUMB_Thumb_bActive */
-{0x0F12, 0x0280,},		/*REG_TC_THUMB_Thumb_uWidth 640 */
-{0x0F12, 0x01E0,},		/*REG_TC_THUMB_Thumb_uHeight 480 */
-{0x002A, 0x0398,},
-{0x0F12, 0x0A00,},		/*REG_0TC_CCFG_usWidth 2560 */
-{0x0F12, 0x0780,},		/*REG_0TC_CCFG_usHeight 1920 */
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_NewConfigSync */
-{0x002A, 0x0270,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_CapConfigChanged */
-};
-
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_snapshot_regs[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
@@ -4191,40 +4163,6 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_snapshot_regs[] = {
 {0x0F12, 0x0001,},	//REG_TC_GP_NewConfigSync
 {0x002A, 0x0244,},
 {0x0F12, 0x0001,},	//REG_TC_GP_EnableCaptureChanged
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_preview_1280_960[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,}, //senHal_uAddColsBin
-{0x0F12, 0x0060,}, //senHal_uAddColsNoBin
-{0x0F12, 0x05C0,}, //senHal_uMinColsBin
-{0x0F12, 0x05C0,}, //senHal_uMinColsNoBin
-{0x002A, 0x0250,},
-{0x0F12, 0x0A00,}, //REG_TC_GP_PrevReqInputWidth //2560
-{0x0F12, 0x0780,}, //REG_TC_GP_PrevReqInputHeight //1920
-{0x0F12, 0x0010,}, //REG_TC_GP_PrevInputWidthOfs //(2592-2560)/2
-{0x0F12, 0x000C,}, //REG_TC_GP_PrevInputHeightOfs //(1944-1920)/2
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,}, //REG_TC_GP_bUseReqInputInPre
-{0x002A, 0x0494,},
-{0x0F12, 0x0A00,}, //REG_TC_PZOOM_PrevZoomReqInputWidth //2560
-{0x0F12, 0x0780,}, //REG_TC_PZOOM_PrevZoomReqInputHeight //1920
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputWidthOfs
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputHeightOfs
-{0x002A, 0x02A6,},
-{0x0F12, 0x0500,}, //REG_0TC_PCFG_usWidth //1280
-{0x0F12, 0x03C0,}, //REG_0TC_PCFG_usHeight //960
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,}, //REG_TC_GP_ActivePrevConfig
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevOpenAfterChange
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,}, //REG_TC_GP_NewConfigSync
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevConfigChanged
-{0xFFFF, 0x00C8,},
 };
 
 static struct msm_camera_i2c_reg_conf s5k4ecgx_camcorder[] = {
@@ -4774,6 +4712,26 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_camcorder[] = {
 {0x002A, 0x060C,},
 {0x0F12, 0x0940,},	/*lt_ExpGain_ExpCurveGainMaxStr*/
 
+{0x002A, 0x18AC,},
+{0x0F12, 0x0060,}, //senHal_uAddColsBin
+{0x0F12, 0x0060,}, //senHal_uAddColsNoBin
+{0x0F12, 0x05C0,}, //senHal_uMinColsBin
+{0x0F12, 0x05C0,}, //senHal_uMinColsNoBin
+{0x002A, 0x0250,},
+{0x0F12, 0x0A00,}, //REG_TC_GP_PrevReqInputWidth //2560
+{0x0F12, 0x0780,}, //REG_TC_GP_PrevReqInputHeight //1920
+{0x0F12, 0x0010,}, //REG_TC_GP_PrevInputWidthOfs //(2592-2560)/2
+{0x0F12, 0x000C,}, //REG_TC_GP_PrevInputHeightOfs //(1944-1920)/2
+{0x002A, 0x0262,},
+{0x0F12, 0x0001,}, //REG_TC_GP_bUseReqInputInPre
+{0x002A, 0x0494,},
+{0x0F12, 0x0A00,}, //REG_TC_PZOOM_PrevZoomReqInputWidth //2560
+{0x0F12, 0x0780,}, //REG_TC_PZOOM_PrevZoomReqInputHeight //1920
+{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputWidthOfs
+{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputHeightOfs
+{0x002A, 0x02A6,},
+{0x0F12, 0x0500,}, //REG_0TC_PCFG_usWidth //1280
+{0x0F12, 0x03C0,}, //REG_0TC_PCFG_usHeight //960
 {0x002A, 0x02AA,},
 {0x0F12, 0x0006,},	//5	//REG_0TC_PCFG_Format	  05 : yuv (0~255)  06:yuv (16~234) 07: raw 09 : jpeg
 {0x002A, 0x0266,},
@@ -4944,42 +4902,42 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_camcorder_disable[] = {
 {0x0F12, 0xFFE0,}, //awbb_BGainOff
 {0x0F12, 0x0000,}, //awbb_GGainOff
 {0x002A, 0x4800,}, // Horizon
-{0x0F12, 0x0208,}, //TVAR_wbt_pBaseCcms[0]
-{0x0F12, 0xFFB5,}, //TVAR_wbt_pBaseCcms[1]
-{0x0F12, 0xFFE8,}, //TVAR_wbt_pBaseCcms[2]
-{0x0F12, 0xFF20,}, //TVAR_wbt_pBaseCcms[3]
-{0x0F12, 0x01BF,}, //TVAR_wbt_pBaseCcms[4]
-{0x0F12, 0xFF53,}, //TVAR_wbt_pBaseCcms[5]
-{0x0F12, 0x0022,}, //TVAR_wbt_pBaseCcms[6]
-{0x0F12, 0xFFEA,}, //TVAR_wbt_pBaseCcms[7]
-{0x0F12, 0x01C2,}, //TVAR_wbt_pBaseCcms[8]
-{0x0F12, 0x00C6,}, //TVAR_wbt_pBaseCcms[9]
-{0x0F12, 0x0095,}, //TVAR_wbt_pBaseCcms[10]
-{0x0F12, 0xFEFD,}, //TVAR_wbt_pBaseCcms[11]
-{0x0F12, 0x0206,}, //TVAR_wbt_pBaseCcms[12]
-{0x0F12, 0xFF7F,}, //TVAR_wbt_pBaseCcms[13]
-{0x0F12, 0x0191,}, //TVAR_wbt_pBaseCcms[14]
-{0x0F12, 0xFF06,}, //TVAR_wbt_pBaseCcms[15]
-{0x0F12, 0x01BA,}, //TVAR_wbt_pBaseCcms[16]
-{0x0F12, 0x0108,}, //TVAR_wbt_pBaseCcms[17]
-{0x0F12, 0x0208,}, //TVAR_wbt_pBaseCcms[18]/* inca A */
-{0x0F12, 0xFFB5,}, //TVAR_wbt_pBaseCcms[19]
-{0x0F12, 0xFFE8,}, //TVAR_wbt_pBaseCcms[20]
-{0x0F12, 0xFF20,}, //TVAR_wbt_pBaseCcms[21]
-{0x0F12, 0x01BF,}, //TVAR_wbt_pBaseCcms[22]
-{0x0F12, 0xFF53,}, //TVAR_wbt_pBaseCcms[23]
-{0x0F12, 0x0022,}, //TVAR_wbt_pBaseCcms[24]
-{0x0F12, 0xFFEA,}, //TVAR_wbt_pBaseCcms[25]
-{0x0F12, 0x01C2,}, //TVAR_wbt_pBaseCcms[26]
-{0x0F12, 0x00C6,}, //TVAR_wbt_pBaseCcms[27]
-{0x0F12, 0x0095,}, //TVAR_wbt_pBaseCcms[28]
-{0x0F12, 0xFEFD,}, //TVAR_wbt_pBaseCcms[29]
-{0x0F12, 0x0206,}, //TVAR_wbt_pBaseCcms[30]
-{0x0F12, 0xFF7F,}, //TVAR_wbt_pBaseCcms[31]
-{0x0F12, 0x0191,}, //TVAR_wbt_pBaseCcms[32]
-{0x0F12, 0xFF06,}, //TVAR_wbt_pBaseCcms[33]
-{0x0F12, 0x01BA,}, //TVAR_wbt_pBaseCcms[34]
-{0x0F12, 0x0108,}, //TVAR_wbt_pBaseCcms[35]
+{0x0F12, 0x0252,}, //0280 //02CC //02D5 //02C2  //0208   //TVAR_wbt_pBaseCcms[0]
+{0x0F12, 0xFF8B,}, //FF71 //FF57 //FF53 //FF5D  //FFB5   //TVAR_wbt_pBaseCcms[1]
+{0x0F12, 0xFFC8,}, //FFB4 //FF81 //FF7D //FF86  //FFE8   //TVAR_wbt_pBaseCcms[2]
+{0x0F12, 0xFF01,}, //FEE5 //FEC7 //FEC2 //FECD  //FF20   //TVAR_wbt_pBaseCcms[3]
+{0x0F12, 0x01EB,}, //021A //024E //0257 //0244  //01BF   //TVAR_wbt_pBaseCcms[4]
+{0x0F12, 0xFF47,}, //FF33 //FF1D //FF19 //FF21  //FF53   //TVAR_wbt_pBaseCcms[5]
+{0x0F12, 0xFFDB,}, //FFC7 //FFA7 //FFA3 //FFAB  //0022   //TVAR_wbt_pBaseCcms[6]
+{0x0F12, 0xFFD9,}, //FFC5 //FFA5 //FFA1 //FFA9  //FFEA   //TVAR_wbt_pBaseCcms[7]
+{0x0F12, 0x021B,}, //0241 //0283 //028A //027A  //01C2   //TVAR_wbt_pBaseCcms[8]
+{0x0F12, 0x0102,}, //0119 //010F //0113 //010B  //00C6   //TVAR_wbt_pBaseCcms[9]
+{0x0F12, 0x00BF,}, //00D0 //0115 //0119 //0111  //0095   //TVAR_wbt_pBaseCcms[10]
+{0x0F12, 0xFE97,}, //FE6F //FE33 //FE2C //FE3C  //FEFD   //TVAR_wbt_pBaseCcms[11]
+{0x0F12, 0x0206,}, //0220 //022B //0230 //0226  //0206   //TVAR_wbt_pBaseCcms[12]
+{0x0F12, 0xFF57,}, //FF2A //FF16 //FF0F //FF1F  //FF7F   //TVAR_wbt_pBaseCcms[13]
+{0x0F12, 0x01BA,}, //01CC //01D4 //01D7 //01D0  //0191   //TVAR_wbt_pBaseCcms[14]
+{0x0F12, 0xFEF1,}, //FEC6 //FE84 //FE7D //FE8E  //FF06   //TVAR_wbt_pBaseCcms[15]
+{0x0F12, 0x016D,}, //0183 //01A4 //01A8 //019F  //01BA   //TVAR_wbt_pBaseCcms[16]
+{0x0F12, 0x0169,}, //017F //01A0 //01A4 //019B  //0108   //TVAR_wbt_pBaseCcms[17]
+{0x0F12, 0x0234,}, //0251 //0262 //0287 //0262  //0208		//TVAR_wbt_pBaseCcms[18]/* inca A */
+{0x0F12, 0xFF9A,}, //FF8B //FF82 //FF72 //FF82  //FFB5   //TVAR_wbt_pBaseCcms[19]
+{0x0F12, 0xFFD3,}, //FFC7 //FFC1 //FFAA //FFC1  //FFE8   //TVAR_wbt_pBaseCcms[20]
+{0x0F12, 0xFF11,}, //FF00 //FEF7 //FEE5 //FEF7  //FF20   //TVAR_wbt_pBaseCcms[21]
+{0x0F12, 0x01CC,}, //01EA //01FB //0218 //01FB  //01BF   //TVAR_wbt_pBaseCcms[22]
+{0x0F12, 0xFF53,}, //FF46 //FF40 //FF32 //FF40  //FF53   //TVAR_wbt_pBaseCcms[23]
+{0x0F12, 0xFFE6,}, //FFDA //FFD4 //FFC3 //FFD4  //0022   //TVAR_wbt_pBaseCcms[24]
+{0x0F12, 0xFFE4,}, //FFD8 //FFD2 //FFC1 //FFD2  //FFEA   //TVAR_wbt_pBaseCcms[25]
+{0x0F12, 0x0201,}, //0219 //0228 //0247 //0228  //01C2   //TVAR_wbt_pBaseCcms[26]
+{0x0F12, 0x00F2,}, //0101 //010A //010D //010A  //00C6   //TVAR_wbt_pBaseCcms[27]
+{0x0F12, 0x00B4,}, //00BF //00C5 //00DF //00C5  //0095   //TVAR_wbt_pBaseCcms[28]
+{0x0F12, 0xFEAD,}, //FE96 //FE89 //FE6A //FE89  //FEFD   //TVAR_wbt_pBaseCcms[29]
+{0x0F12, 0x01F6,}, //0205 //020F //0219 //020F  //0206   //TVAR_wbt_pBaseCcms[30]
+{0x0F12, 0xFF70,}, //FF55 //FF47 //FF33 //FF47  //FF7F   //TVAR_wbt_pBaseCcms[31]
+{0x0F12, 0x01AE,}, //01B9 //01C0 //01C7 //01C0  //0191   //TVAR_wbt_pBaseCcms[32]
+{0x0F12, 0xFF0B,}, //FEF1 //FEE2 //FEC0 //FEE2  //FF06   //TVAR_wbt_pBaseCcms[33]
+{0x0F12, 0x0160,}, //016D //0175 //0185 //0175  //01BA   //TVAR_wbt_pBaseCcms[34]
+{0x0F12, 0x015C,}, //0169 //0171 //0181 //0171  //0108   //TVAR_wbt_pBaseCcms[35]
 {0x0F12, 0x0208,}, //TVAR_wbt_pBaseCcms[36] /*WW*/
 {0x0F12, 0xFFB5,}, //TVAR_wbt_pBaseCcms[37]
 {0x0F12, 0xFFE8,}, //TVAR_wbt_pBaseCcms[38]
@@ -5133,7 +5091,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_camcorder_disable[] = {
 {0x0F12, 0x1A02,}, //70000A18 AFIT8_yuviirnr_iYNRStrengthH [7:0] AFIT8_yuviirnr_iUVNRStrengthL
 {0x0F12, 0x4A18,}, //70000A1A AFIT8_yuviirnr_iUVNRStrengthH [7:0] AFIT8_byr_gras_iShadingPower
 {0x0F12, 0x0080,}, //70000A1C AFIT8_RGBGamma2_iLinearity [7:0] AFIT8_RGBGamma2_iDarkReduce
-{0x0F12, 0x0350,}, //70000A1E AFIT8_ccm_oscar_iSaturation [7:0] AFIT8_RGB2YUV_iYOffset
+{0x0F12, 0x0380,}, //0350 //70000A1E AFIT8_ccm_oscar_iSaturation [7:0] AFIT8_RGB2YUV_iYOffset
 {0x0F12, 0x0180,}, //70000A20 AFIT8_RGB2YUV_iRGBGain [7:0] AFIT8_bnr_nClustLevel_H
 {0x0F12, 0x0A0A,}, //70000A22 AFIT8_bnr_iClustMulT_H [7:0] AFIT8_bnr_iClustMulT_C
 {0x0F12, 0x0101,}, //70000A24 AFIT8_bnr_iClustThresh_H [7:0] AFIT8_bnr_iClustThresh_C
@@ -5518,160 +5476,6 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_camcorder_disable[] = {
 {0x002A, 0x060C,},
 {0x0F12, 0x0800,}, // lt_ExpGain_ExpCurveGainMaxStr
 
-{0x002A, 0x02AA,},
-{0x0F12, 0x0005,},	//REG_0TC_PCFG_Format	  05 : yuv (0~255)  06:yuv (16~234) 07: raw 09 : jpeg
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,},	/*	#REG_TC_GP_ActivePrevConfig	*/
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_PrevOpenAfterChange	*/
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_NewConfigSync	*/
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_PrevConfigChanged	*/
-{0x002A, 0x0270,},
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_CapConfigChanged	*/
-{0x002A, 0x023E,},
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_EnablePreview	*/
-{0x0F12, 0x0001,},	/*	#REG_TC_GP_EnablePreviewChanged	*/
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_preview_1280_720[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,},		/*senHal_uAddColsBin */
-{0x0F12, 0x0060,},		/*senHal_uAddColsNoBin */
-{0x0F12, 0x07DC,},		/*senHal_uMinColsBin */
-{0x0F12, 0x05C0,},		/*senHal_uMinColsNoBin */
-{0x002A, 0x0250,},
-{0x0F12, 0x0A00,}, //REG_TC_GP_PrevReqInputWidth  = 2560
-{0x0F12, 0x05A0,}, //REG_TC_GP_PrevReqInputHeight = 1440
-{0x0F12, 0x0010,}, //REG_TC_GP_PrevInputWidthOfs  = (2592-2560)/2
-{0x0F12, 0x00FC,}, //REG_TC_GP_PrevInputHeightOfs = (1944-1440)/2
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,}, /*REG_TC_GP_bUseReqInputInPre */
-{0x002A, 0x0494,},
-{0x0F12, 0x0A00,}, //REG_TC_PZOOM_PrevZoomReqInputWidth  = 2560
-{0x0F12, 0x05A0,}, //REG_TC_PZOOM_PrevZoomReqInputHeight = 1440
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputWidthOfs
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputHeightOfs
-{0x002A, 0x02A6,},
-{0x0F12, 0x0500,}, //REG_0TC_PCFG_usWidth  = 1280
-{0x0F12, 0x02D0,}, //REG_0TC_PCFG_usHeight = 720
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,},		/*REG_TC_GP_ActivePrevConfig */
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_PrevOpenAfterChange */
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_NewConfigSync */
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_PrevConfigChanged */
-{0xFFFF, 0x00C8,},
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_preview_800_480[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,},		/*senHal_uAddColsBin */
-{0x0F12, 0x0060,},		/*senHal_uAddColsNoBin */
-{0x0F12, 0x05C0,},		/*senHal_uMinColsBin */
-{0x0F12, 0x05C0,},		/*senHal_uMinColsNoBin */
-{0x002A, 0x0250,},
-{0x0F12, 0x0A00,},		/*REG_TC_GP_PrevReqInputWidth //2560 */
-{0x0F12, 0x0600,},		/*REG_TC_GP_PrevReqInputHeight //1536 */
-{0x0F12, 0x0010,},		/*REG_TC_GP_PrevInputWidthOfs //(2592-2560)/2*/
-{0x0F12, 0x00CC,},		/*REG_TC_GP_PrevInputHeightOfs/(1944-1536)/2*/
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_bUseReqInputInPre */
-{0x002A, 0x0494,},
-{0x0F12, 0x0A00,},		/*REG_TC_PZOOM_PrevZoomReqInputWidth //2560 */
-{0x0F12, 0x0600,},		/*REG_TC_PZOOM_PrevZoomReqInputHeight //1536 */
-{0x0F12, 0x0000,},		/*REG_TC_PZOOM_PrevZoomReqInputWidthOfs */
-{0x0F12, 0x0000,},		/*REG_TC_PZOOM_PrevZoomReqInputHeightOfs */
-{0x002A, 0x02A6,},
-{0x0F12, 0x0320,},		/*REG_0TC_PCFG_usWidth //800 */
-{0x0F12, 0x01E0,},		/*REG_0TC_PCFG_usHeight //480 */
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,},		/*REG_TC_GP_ActivePrevConfig */
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_PrevOpenAfterChange */
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_NewConfigSync */
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,},		/*REG_TC_GP_PrevConfigChanged */
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_preview_720_480[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,},	//senHal_uAddColsBin
-{0x0F12, 0x0060,},	//senHal_uAddColsNoBin
-{0x0F12, 0x05C0,},	//senHal_uMinColsBin
-{0x0F12, 0x05C0,},	//senHal_uMinColsNoBin
-{0x002A, 0x0250,},
-{0x0F12, 0x0A00,},	//REG_TC_GP_PrevReqInputWidth //2560
-{0x0F12, 0x06A8,},	//REG_TC_GP_PrevReqInputHeight //1704
-{0x0F12, 0x0010,},	//REG_TC_GP_PrevInputWidthOfs //(2592-2560)/2
-{0x0F12, 0x0078,},	//REG_TC_GP_PrevInputHeightOfs //(1944-1704)/2
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,},	//REG_TC_GP_bUseReqInputInPre
-{0x002A, 0x0494,},
-{0x0F12, 0x0A00,},	//REG_TC_PZOOM_PrevZoomReqInputWidth //2560
-{0x0F12, 0x06A8,},	//REG_TC_PZOOM_PrevZoomReqInputHeight //1704
-{0x0F12, 0x0000,},	//REG_TC_PZOOM_PrevZoomReqInputWidthOfs
-{0x0F12, 0x0000,},	//REG_TC_PZOOM_PrevZoomReqInputHeightOfs
-{0x002A, 0x02A6,},
-{0x0F12, 0x02D0,},	//REG_0TC_PCFG_usWidth //720
-{0x0F12, 0x01E0,},	//REG_0TC_PCFG_usHeight //480
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,},	//REG_TC_GP_ActivePrevConfig
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,},	//REG_TC_GP_PrevOpenAfterChange
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},	//REG_TC_GP_NewConfigSync
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,},	//REG_TC_GP_PrevConfigChanged
-};
-
-static struct msm_camera_i2c_reg_conf  s5k4ecgx_preview_640_480[] = {
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,},	//senHal_uAddColsBin
-{0x0F12, 0x0060,},	//senHal_uAddColsNoBin
-{0x0F12, 0x05C0,},	//senHal_uMinColsBin
-{0x0F12, 0x05C0,},	//senHal_uMinColsNoBin
-{0x002A, 0x0250,},
-{0x0F12, 0x0A00,},	//REG_TC_GP_PrevReqInputWidth //2560
-{0x0F12, 0x0780,},	//REG_TC_GP_PrevReqInputHeight //1920
-{0x0F12, 0x0010,},	//REG_TC_GP_PrevInputWidthOfs //(2592-2560)/2
-{0x0F12, 0x000C,},	//REG_TC_GP_PrevInputHeightOfs //(1944-1920)/2
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,},	//REG_TC_GP_bUseReqInputInPre
-{0x002A, 0x0494,},
-{0x0F12, 0x0A00,},	//REG_TC_PZOOM_PrevZoomReqInputWidth //2560
-{0x0F12, 0x0780,},	//REG_TC_PZOOM_PrevZoomReqInputHeight //1920
-{0x0F12, 0x0000,},	//REG_TC_PZOOM_PrevZoomReqInputWidthOfs
-{0x0F12, 0x0000,},	//REG_TC_PZOOM_PrevZoomReqInputHeightOfs
-{0x002A, 0x02A6,},
-{0x0F12, 0x0280,},	//REG_0TC_PCFG_usWidth //640
-{0x0F12, 0x01E0,},	//REG_0TC_PCFG_usHeight //480
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,},	//REG_TC_GP_ActivePrevConfig
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,},	//REG_TC_GP_PrevOpenAfterChange
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,},	//REG_TC_GP_NewConfigSync
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,},	//REG_TC_GP_PrevConfigChanged
-};
-
-static struct msm_camera_i2c_reg_conf s5k4ecgx_preview_320_240[]=
-{
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
 {0x002A, 0x18AC,},
 {0x0F12, 0x0060,}, //senHal_uAddColsBin
 {0x0F12, 0x0060,}, //senHal_uAddColsNoBin
@@ -5690,49 +5494,23 @@ static struct msm_camera_i2c_reg_conf s5k4ecgx_preview_320_240[]=
 {0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputWidthOfs
 {0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputHeightOfs
 {0x002A, 0x02A6,},
-{0x0F12, 0x0140,}, //REG_0TC_PCFG_usWidth //320
-{0x0F12, 0x00F0,}, //REG_0TC_PCFG_usHeight //240
+{0x0F12, 0x0500,}, //REG_0TC_PCFG_usWidth //1280
+{0x0F12, 0x03C0,}, //REG_0TC_PCFG_usHeight //960
+{0x002A, 0x02AA,},
+{0x0F12, 0x0005,},	//REG_0TC_PCFG_Format	  05 : yuv (0~255)  06:yuv (16~234) 07: raw 09 : jpeg
 {0x002A, 0x0266,},
-{0x0F12, 0x0000,}, //REG_TC_GP_ActivePrevConfig
+{0x0F12, 0x0000,},	/*	#REG_TC_GP_ActivePrevConfig	*/
 {0x002A, 0x026A,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevOpenAfterChange
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_PrevOpenAfterChange	*/
 {0x002A, 0x024E,},
-{0x0F12, 0x0001,}, //REG_TC_GP_NewConfigSync
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_NewConfigSync	*/
 {0x002A, 0x0268,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevConfigChanged
-};
-static struct msm_camera_i2c_reg_conf s5k4ecgx_preview_176_144[]=
-{
-{0xFCFC, 0xD000,},
-{0x0028, 0x7000,},
-{0x002A, 0x18AC,},
-{0x0F12, 0x0060,}, //senHal_uAddColsBin
-{0x0F12, 0x0060,}, //senHal_uAddColsNoBin
-{0x0F12, 0x05C0,}, //senHal_uMinColsBin
-{0x0F12, 0x05C0,}, //senHal_uMinColsNoBin
-{0x002A, 0x0250,},
-{0x0F12, 0x0928,}, //REG_TC_GP_PrevReqInputWidth //2344
-{0x0F12, 0x0780,}, //REG_TC_GP_PrevReqInputHeight //1920
-{0x0F12, 0x007C,}, //REG_TC_GP_PrevInputWidthOfs //(2592-2344)/2
-{0x0F12, 0x000C,}, //REG_TC_GP_PrevInputHeightOfs //(1944-1920)/2
-{0x002A, 0x0262,},
-{0x0F12, 0x0001,}, //REG_TC_GP_bUseReqInputInPre
-{0x002A, 0x0494,},
-{0x0F12, 0x0928,}, //REG_TC_PZOOM_PrevZoomReqInputWidth //2344
-{0x0F12, 0x0780,}, //REG_TC_PZOOM_PrevZoomReqInputHeight //1920
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputWidthOfs
-{0x0F12, 0x0000,}, //REG_TC_PZOOM_PrevZoomReqInputHeightOfs
-{0x002A, 0x02A6,},
-{0x0F12, 0x00B0,}, //REG_0TC_PCFG_usWidth //176
-{0x0F12, 0x0090,}, //REG_0TC_PCFG_usHeight //144
-{0x002A, 0x0266,},
-{0x0F12, 0x0000,}, //REG_TC_GP_ActivePrevConfig
-{0x002A, 0x026A,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevOpenAfterChange
-{0x002A, 0x024E,},
-{0x0F12, 0x0001,}, //REG_TC_GP_NewConfigSync
-{0x002A, 0x0268,},
-{0x0F12, 0x0001,}, //REG_TC_GP_PrevConfigChanged
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_PrevConfigChanged	*/
+{0x002A, 0x0270,},
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_CapConfigChanged	*/
+{0x002A, 0x023E,},
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_EnablePreview	*/
+{0x0F12, 0x0001,},	/*	#REG_TC_GP_EnablePreviewChanged	*/
 };
 
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_ae_lock[] = {
@@ -5845,6 +5623,25 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_af[] = {
 {0x0F12, 0x0005,},
 };
 
+static struct msm_camera_i2c_reg_conf  s5k4ecgx_focus_mode_auto[] = {
+{0xFCFC, 0xD000,},
+{0x0028, 0x7000,},
+{0x002A, 0x028E,},
+{0x0F12, 0x0000,},
+{0xFFFF, 0x0064,}, //SLEEP for 50 msec // ---------------------put normal mode 1 table
+
+{0xFCFC, 0xD000,},
+{0x0028, 0x7000,},
+{0x002A, 0x028C,},
+{0x0F12, 0x0004,}, //REG_TC_AF_AfCmd
+{0xFFFF, 0x0064,}, //SLEEP for 50 msec // ---------------------put normal mode 2 table
+{0xFCFC, 0xD000,},
+{0x0028, 0x7000,},
+{0x002A, 0x1648,},
+{0x0F12, 0x1002,}, //2nd search on when 2nd search lens oppsite direction moving
+{0xFFFF, 0x0032,}, //SLEEP for 50 msec
+};
+
 static struct msm_camera_i2c_reg_conf  s5k4ecgx_Pre_Flash_On[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
@@ -5895,7 +5692,7 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_fps_auto[] = {
 {0x002A, 0x02BE,},
 {0x0F12, 0x0000,}, /*usFrTimeType*/
 {0x0F12, 0x0001,}, /*REG_0TC_PCFG_FrRateQualityType */
-{0x0F12, 0x03E8,}, /*REG_0TC_PCFG_usMaxFrTimeMsecMult10 */ /* 029Ah:15fps*/
+{0x0F12, 0x03E8,}, /*REG_0TC_PCFG_usMaxFrTimeMsecMult10 */ /* 03E8h:10fps*/
 {0x0F12, 0x014A,}, /*REG_0TC_PCFG_usMinFrTimeMsecMult10 */ /*014Ah:30fps*/
 {0x002A, 0x0266,},
 {0x0F12, 0x0000,},	/*REG_TC_GP_ActivePrevConfig */
@@ -5911,18 +5708,18 @@ static struct msm_camera_i2c_reg_conf  s5k4ecgx_fps_30[] = {
 {0xFCFC, 0xD000,},
 {0x0028, 0x7000,},
 {0x002A, 0x02BE,},
-{0x0F12, 0x0000,},
-{0x0F12, 0x0001,},
-{0x0F12, 0x014A,},
-{0x0F12, 0x014A,},
+{0x0F12, 0x0000,},	/*usFrTimeType*/
+{0x0F12, 0x0001,},	/*REG_0TC_PCFG_FrRateQualityType */
+{0x0F12, 0x014A,},	/*REG_0TC_PCFG_usMaxFrTimeMsecMult10 */ /* 014Ah:30fps*/
+{0x0F12, 0x014A,},	/*REG_0TC_PCFG_usMinFrTimeMsecMult10 */ /*014Ah:30fps*/
 {0x002A, 0x0266,},
-{0x0F12, 0x0000,},
+{0x0F12, 0x0000,},	/*REG_TC_GP_ActivePrevConfig */
 {0x002A, 0x026A,},
-{0x0F12, 0x0001,},
+{0x0F12, 0x0001,},	/*REG_TC_GP_PrevOpenAfterChange */
 {0x002A, 0x024E,},
-{0x0F12, 0x0001,},	/* #REG_TC_GP_NewConfigSync */
+{0x0F12, 0x0001,},	/*REG_TC_GP_NewConfigSync */
 {0x002A, 0x0268,},
-{0x0F12, 0x0001,},	/* #REG_TC_GP_CapConfigChanged */
+{0x0F12, 0x0001,},	/*REG_TC_GP_PrevConfigChanged */
 };
 
 #endif

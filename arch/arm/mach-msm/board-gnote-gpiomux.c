@@ -304,13 +304,6 @@ static struct msm_gpiomux_config msm_lcd_configs[] __initdata = {
 		},
 	},
 	{
-		.gpio =16,	/* LCD Enable */
-		.settings = {
-			[GPIOMUX_ACTIVE]    = &lcd_enable_act_cfg,
-			[GPIOMUX_SUSPENDED] = &lcd_enable_sus_cfg,
-		},
-	},
-	{
 		.gpio =63,	/* LCD Enable */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &lcd_enable_act_cfg,
@@ -505,14 +498,6 @@ static struct msm_gpiomux_config msm_csensor_configs[] __initdata = {
 		},
 	},
 	{
-		.gpio = 27, /* CAM_MCLK1 */
-		.settings = {
-			[GPIOMUX_ACTIVE]    = &cam_settings[9],
-			[GPIOMUX_SUSPENDED] = &cam_settings[10],
-		},
-
-	},
-	{
 		.gpio = 29, /* CCI_I2C_SDA0 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
@@ -562,7 +547,7 @@ static struct msm_gpiomux_config msm_csensor_configs[] __initdata = {
 		},
 	},
 	{
-		.gpio = 36, /* AF_SCL */
+		.gpio = 33, /* AF_SCL */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -590,12 +575,6 @@ static struct gpiomux_setting cypress_int_sus_cfg = {
 	.pull = GPIOMUX_PULL_DOWN,
 };
 
-static struct gpiomux_setting gpio_i2c_gpio_config = {
-	.func = GPIOMUX_FUNC_GPIO,
-	.drv = GPIOMUX_DRV_2MA,
-	.pull = GPIOMUX_PULL_NONE,
-};
-
 static struct msm_gpiomux_config msm_cypress_configs[] __initdata = {
 	{
 		.gpio = 17,
@@ -606,26 +585,31 @@ static struct msm_gpiomux_config msm_cypress_configs[] __initdata = {
 	},
 };
 
-static struct msm_gpiomux_config msm_keyboad_cypress_configs[] __initdata = {
+
+static struct gpiomux_setting gpio_i2c_tkey_active_config = {
+	.func = GPIOMUX_FUNC_GPIO,
+	.drv = GPIOMUX_DRV_2MA,
+	.pull = GPIOMUX_PULL_UP,
+};
+static struct gpiomux_setting gpio_i2c_tkey_suspend_config = {
+	.func = GPIOMUX_FUNC_GPIO,
+	.drv = GPIOMUX_DRV_2MA,
+	.pull = GPIOMUX_PULL_UP,
+};
+
+static struct msm_gpiomux_config msm_keyboad_abov_configs[] __initdata = {
 	{
-		.gpio      = 49,		/* 2_TOUCH_INT */
+		.gpio      = 22,		/* BLSP1 QUP1 SPI_DATA_MOSI */
 		.settings = {
-			[GPIOMUX_ACTIVE] = &cypress_int_act_cfg,
-			[GPIOMUX_SUSPENDED] = &cypress_int_sus_cfg,
+			[GPIOMUX_ACTIVE] = &gpio_i2c_tkey_active_config,
+			[GPIOMUX_SUSPENDED] = &gpio_i2c_tkey_suspend_config,
 		},
 	},
 	{
-		.gpio      = 23,		/* 2_TOUCH_I2C_SCL */
+		.gpio      = 23,		/* BLSP1 QUP1 SPI_DATA_MISO */
 		.settings = {
-			[GPIOMUX_ACTIVE] = &gpio_i2c_gpio_config,
-			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[2],
-		},
-	},
-	{
-		.gpio      = 22,		/* 2_TOUCH_I2C_SDA */
-		.settings = {
-			[GPIOMUX_ACTIVE] = &gpio_i2c_gpio_config,
-			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[2],
+			[GPIOMUX_ACTIVE] = &gpio_i2c_tkey_active_config,
+			[GPIOMUX_SUSPENDED] = &gpio_i2c_tkey_suspend_config,
 		},
 	},
 };
@@ -882,8 +866,8 @@ void __init msm8226_init_gpiomux(void)
 		ARRAY_SIZE(msm_cypress_configs));
 
 	/* Touch Key */
-	msm_gpiomux_install(msm_keyboad_cypress_configs,
-		ARRAY_SIZE(msm_keyboad_cypress_configs));
+	msm_gpiomux_install(msm_keyboad_abov_configs,
+		ARRAY_SIZE(msm_keyboad_abov_configs));
 
 	/* NFC */
 	msm_gpiomux_install(msm_nfc_configs,

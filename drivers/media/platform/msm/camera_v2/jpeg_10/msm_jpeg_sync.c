@@ -676,7 +676,7 @@ int msm_jpeg_ioctl_hw_cmds(struct msm_jpeg_device *pgmn_dev,
 	void * __user arg)
 {
 	int is_copy_to_user;
-	int len;
+	uint32_t len;
 	uint32_t m;
 	struct msm_jpeg_hw_cmds *hw_cmds_p;
 	struct msm_jpeg_hw_cmd *hw_cmd_p;
@@ -694,7 +694,7 @@ int msm_jpeg_ioctl_hw_cmds(struct msm_jpeg_device *pgmn_dev,
 		return -EFAULT;
 	}
 
-	if (copy_from_user(hw_cmds_p, arg, len)) {
+	if ((len < 0) || copy_from_user(hw_cmds_p, arg, len)) {
 		JPEG_PR_ERR("%s:%d] failed\n", __func__, __LINE__);
 		kfree(hw_cmds_p);
 		return -EFAULT;

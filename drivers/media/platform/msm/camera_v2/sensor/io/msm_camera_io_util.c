@@ -107,6 +107,17 @@ void msm_camera_io_memcpy(void __iomem *dest_addr,
 	msm_camera_io_dump(dest_addr, len);
 }
 
+void msm_camera_io_memcpy_mb(void __iomem *dest_addr,
+	void __iomem *src_addr, u32 len)
+{
+	int i;
+	u32 *d = (u32 *) dest_addr;
+	u32 *s = (u32 *) src_addr;
+
+	for (i = 0; i < (len / 4); i++)
+		msm_camera_io_w_mb(*s++, d++);
+}
+
 int msm_cam_clk_enable(struct device *dev, struct msm_cam_clk_info *clk_info,
 		struct clk **clk_ptr, int num_clk, int enable)
 {
@@ -452,7 +463,6 @@ int msm_camera_config_single_vreg(struct device *dev,
 			pr_err("%s : can't find reg name", __func__);
 			goto vreg_get_fail;
 		}
-		pr_info("%s enable %s\n", __func__, cam_vreg->reg_name);
 		*reg_ptr = regulator_get(dev, cam_vreg->reg_name);
 		if (IS_ERR(*reg_ptr)) {
 			pr_err("%s: %s get failed\n", __func__,
@@ -486,6 +496,15 @@ int msm_camera_config_single_vreg(struct device *dev,
 				__func__, cam_vreg->reg_name);
 			goto vreg_unconfig;
 		}
+
+		rc = regulator_is_enabled(*reg_ptr);
+		if (rc <= 0) {
+			pr_err("CAM VREG[%s] enable failed\n", cam_vreg->reg_name);
+		}
+		pr_err("CAM VREG[%s] output Voltage[%duV] range[%duV - %duV]\n",
+			cam_vreg->reg_name, regulator_get_voltage(*reg_ptr),
+			cam_vreg->min_voltage, cam_vreg->max_voltage);
+
 	} else {
 		if (*reg_ptr) {
 			pr_info("%s disable %s\n", __func__, cam_vreg->reg_name);

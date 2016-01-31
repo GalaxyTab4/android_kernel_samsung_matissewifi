@@ -8,5 +8,6 @@ obj-$(CONFIG_MSM_CAMERA_SENSOR) += msm_sensor_init.o msm_sensor_driver.o msm_sen
 obj-$(CONFIG_S5K4ECGX) += s5k4ecgx_yuv.o
 obj-$(CONFIG_SR030PC50) += sr030pc50_yuv.o
 obj-$(CONFIG_SR352) += sr352_yuv.o
+obj-$(CONFIG_SR200PC20) += sr200pc20_yuv.o
 obj-$(CONFIG_SR130PC20) += sr130pc20_yuv.o
 obj-$(CONFIG_MSMB_CAMERA) += flash/

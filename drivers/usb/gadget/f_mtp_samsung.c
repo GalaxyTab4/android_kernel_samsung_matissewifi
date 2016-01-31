@@ -775,7 +775,7 @@ static ssize_t mtpg_write(struct file *fp, const char __user *buf,
 }
 
 static ssize_t interrupt_write(struct file *fd,
-			const char __user *buf, size_t count)
+			struct mtp_event *event, size_t count)
 {
 	struct mtpg_dev *dev = fd->private_data;
 	struct usb_request *req = 0;
@@ -795,7 +795,7 @@ static ssize_t interrupt_write(struct file *fd,
 		return -ENOMEM;
 	}
 
-	if (copy_from_user(req->buf, buf, count)) {
+	if (copy_from_user(req->buf, (void __user *)event->data, count)) {
 		mtpg_req_put(dev, &dev->intr_idle, req);
 		printk(KERN_ERR "[%s]copy from user has failed\n", __func__);
 		return -EIO;
@@ -804,7 +804,7 @@ static ssize_t interrupt_write(struct file *fd,
 	req->length = count;
 	/*req->complete = interrupt_complete;*/
 
-	ret = usb_ep_queue(dev->int_in, req, GFP_ATOMIC);
+	ret = usb_ep_queue(dev->int_in, req, GFP_KERNEL);
 
 	if (ret) {
 		printk(KERN_ERR "[%s:%d]\n", __func__, __LINE__);
@@ -814,6 +814,13 @@ static ssize_t interrupt_write(struct file *fd,
 	DEBUG_MTPB("[%s] \tline = [%d] returning ret is %d\\n",
 						__func__, __LINE__, ret);
 	return ret;
+}
+
+static void mtp_complete_ep0_transection(struct usb_ep *ep, struct usb_request *req)
+{
+	if (req->status || req->actual != req->length) {
+		DEBUG_MTPB("[%s]\tline = [%d]\n", __func__, __LINE__);
+	}
 }
 
 static void read_send_work(struct work_struct *work)
@@ -920,6 +927,7 @@ static void read_send_work(struct work_struct *work)
 static long  mtpg_ioctl(struct file *fd, unsigned int code, unsigned long arg)
 {
 	struct mtpg_dev		*dev = fd->private_data;
+  struct mtp_event        event;
 	struct usb_composite_dev *cdev;
 	struct usb_request	*req;
 	int status = 0;
@@ -975,8 +983,9 @@ static long  mtpg_ioctl(struct file *fd, unsigned int code, unsigned long arg)
 	case MTP_WRITE_INT_DATA:
 		printk(KERN_INFO "[%s]\t%d MTP intrpt_Write no slep\n",
 						__func__, __LINE__);
-		ret_value = interrupt_write(fd, (const char *)arg,
-					MTP_MAX_PACKET_LEN_FROM_APP);
+		if (copy_from_user(&event, (void __user *)arg, sizeof(event)))
+			status = -EFAULT;
+		ret_value = interrupt_write(fd, &event, MTP_MAX_PACKET_LEN_FROM_APP);
 		if (ret_value < 0) {
 			printk(KERN_ERR "[%s]\t%d interptFD failed\n",
 							 __func__, __LINE__);
@@ -1012,6 +1021,7 @@ static long  mtpg_ioctl(struct file *fd, unsigned int code, unsigned long arg)
 		/*printk(KERN_DEBUG "[%s]SEND_RESET_ACK and usb_ep_queu
 				ZERO data size = %d\tline=[%d]\n",
 					__func__, size, __LINE__);*/
+		req->complete = mtp_complete_ep0_transection;
 		status = usb_ep_queue(cdev->gadget->ep0,
 						req, GFP_ATOMIC);
 		if (status < 0)
@@ -1034,6 +1044,7 @@ static long  mtpg_ioctl(struct file *fd, unsigned int code, unsigned long arg)
 		memcpy(req->buf, buf, size);
 		req->zero = 0;
 		req->length = size;
+		req->complete = mtp_complete_ep0_transection;
 		status = usb_ep_queue(cdev->gadget->ep0, req,
 							GFP_ATOMIC);
 		if (status < 0)

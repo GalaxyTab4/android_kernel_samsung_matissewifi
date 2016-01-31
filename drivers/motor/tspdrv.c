@@ -121,20 +121,6 @@ static int vibrator_work;
 
 struct vibrator_platform_data vibrator_drvdata;
 
-/*
- * msm8974_sec tspdrv vibration strength control
- * (/sys/class/timed_output/vibrator/pwm_value)
- *
- * sysfs pwm_value
- *    range   : 0 - 100 (100 = old hardcoded value)
- *
- * Author : Park Ju Hyung <qkrwngud825@gmail.com>
- * Modified by : Jean-Pierre Rasquin <yank555.lu@gmail.com>
- */
-
-#define BASE_STRENGTH 126
-static unsigned int pwm_val = 100;
-
 static int set_vibetonz(int timeout)
 {
 	int8_t strength;
@@ -148,7 +134,7 @@ static int set_vibetonz(int timeout)
 	} else {
 		DbgOut((KERN_INFO "tspdrv: ENABLE\n"));
 		if (vibrator_drvdata.vib_model == HAPTIC_PWM) {
-			strength = (int8_t) (BASE_STRENGTH * pwm_val / 100);
+			strength = 126;
 			/* 90% duty cycle */
 			ImmVibeSPI_ForceOut_SetSamples(0, 8, 1, &strength);
 		} else { /* HAPTIC_MOTOR */
@@ -160,34 +146,6 @@ static int set_vibetonz(int timeout)
 	vibrator_value = timeout;
 	return 0;
 }
-
-static ssize_t pwm_value_show(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	return sprintf(buf, "%u\n", pwm_val);
-}
-
-ssize_t pwm_value_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t count)
-{
-	unsigned int new_pwm_val;
-
-	if (!sscanf(buf, "%u", &new_pwm_val))
-		return -EINVAL;
-
-	if (new_pwm_val < 0 || new_pwm_val > 100) {
-		pr_info("[VIB] %s: new pwm_val %d is out of [0, 100] range\n", __func__, pwm_val);
-		return -EINVAL;
-	} else {
-		pr_info("[VIB] %s: pwm_val=%d\n", __func__, pwm_val);
-	}
-
-	if (new_pwm_val != pwm_val)
-		pwm_val = new_pwm_val;
-
-	return count;
-}
-
-static DEVICE_ATTR(pwm_value, S_IRUGO | S_IWUSR,
-		pwm_value_show, pwm_value_store);
 
 static void _set_vibetonz_work(struct work_struct *unused)
 {
@@ -229,6 +187,9 @@ static void enable_vibetonz_from_user(struct timed_output_dev *dev, int value)
 	hrtimer_cancel(&timer);
 
 	/* set_vibetonz(value); */
+#ifdef CONFIG_TACTILE_ASSIST
+	g_bOutputDataBufferEmpty = 0;
+#endif
 	vibrator_work = value;
 	schedule_work(&vibetonz_work);
 
@@ -258,17 +219,9 @@ static void vibetonz_start(void)
 
 	ret = timed_output_dev_register(&timed_output_vt);
 
-	if (ret) {
-		DbgOut((KERN_ERR
-		"tspdrv: timed_output_dev_register is fail\n"));
-		return;
-	}
-
-	ret = device_create_file(timed_output_vt.dev, &dev_attr_pwm_value);
-
 	if (ret)
 		DbgOut((KERN_ERR
-		"tspdrv: create sysfs fail: pwm_value\n"));
+		"tspdrv: timed_output_dev_register is fail\n"));
 }
 
 /* File IO */
@@ -359,11 +312,15 @@ static int tspdrv_parse_dt(struct platform_device *pdev)
 #else
 	vibrator_drvdata.vib_pwm_gpio = of_get_named_gpio(np, "samsung,pmic_vib_pwm", 0);
 #endif
-	
+
 	if (!gpio_is_valid(vibrator_drvdata.vib_pwm_gpio)) {
 		pr_err("%s:%d, reset gpio not specified\n",
 				__func__, __LINE__);
-	} 
+	}
+
+#if defined(CONFIG_MOTOR_ISA1000)
+	vibrator_drvdata.vib_en_gpio = of_get_named_gpio(np, "samsung,vib_en_gpio", 0);
+#endif
 
 #if defined(CONFIG_MOTOR_DRV_DRV2603)
 	vibrator_drvdata.drv2603_en_gpio = of_get_named_gpio(np, "samsung,drv2603_en", 0);
@@ -372,7 +329,12 @@ static int tspdrv_parse_dt(struct platform_device *pdev)
 				__func__, __LINE__);
 	}
 #endif
-	
+#if defined(CONFIG_MOTOR_DRV_MAX77888)
+	vibrator_drvdata.max77888_en_gpio = of_get_named_gpio(np, "samsung,vib_power_en", 0);
+	if (!gpio_is_valid(vibrator_drvdata.max77888_en_gpio)) {
+		pr_err("%s:%d, max77888_en_gpio not specified\n",__func__, __LINE__);
+	}
+#endif
 	rc = of_property_read_u32(np, "samsung,vib_model", &vibrator_drvdata.vib_model);
 	if (rc) {
 		pr_err("%s:%d, vib_model not specified\n",
@@ -558,7 +520,26 @@ static int32_t drv2603_gpio_init(void)
 	return 0;
 }
 #endif
-
+#if defined(CONFIG_MOTOR_DRV_MAX77888)
+void max77888_gpio_en(bool en)
+{
+	if (en) {
+		gpio_direction_output(vibrator_drvdata.max77888_en_gpio, 1);
+	} else {
+		gpio_direction_output(vibrator_drvdata.max77888_en_gpio, 0);
+	}
+}
+static int32_t max77888_gpio_init(void)
+{
+	int ret;
+	ret = gpio_request(vibrator_drvdata.max77888_en_gpio, "vib enable");
+	if (ret < 0) {
+		printk(KERN_ERR "vib enable gpio_request is failed\n");
+		return 1;
+	}
+	return 0;
+}
+#endif
 static __devinit int tspdrv_probe(struct platform_device *pdev)
 {
 	int ret, i, rc;   /* initialized below */

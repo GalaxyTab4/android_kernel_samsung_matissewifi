@@ -708,11 +708,10 @@ struct v4l2_buffer {
 #define V4L2_QCOM_BUF_INPUT_UNSUPPORTED 0x200000
 #define V4L2_QCOM_BUF_FLAG_EOS          0x2000
 #define V4L2_QCOM_BUF_FLAG_READONLY     0x400000
-#define V4L2_MSM_BUF_FLAG_MBAFF         0x800000
 /*Start : Qualcomm Local Patch - 20131226 */
 #define V4L2_MSM_BUF_FLAG_YUV_601_709_CLAMP	0x20000000
 /*End : Qualcomm Local Patch - 20131226 */
-
+#define V4L2_MSM_BUF_FLAG_MBAFF         0x800000
 /*
  *	O V E R L A Y   P R E V I E W
  */
@@ -1065,6 +1064,7 @@ struct v4l2_bt_timings {
 /* Polarities. If bit is not set, it is assumed to be negative polarity */
 #define V4L2_DV_VSYNC_POS_POL	0x00000001
 #define V4L2_DV_HSYNC_POS_POL	0x00000002
+
 
 /* DV timings */
 struct v4l2_dv_timings {
@@ -1915,7 +1915,7 @@ enum v4l2_mpeg_vidc_video_decoder_multi_stream {
 #define V4L2_CID_MPEG_VIDC_VIDEO_VP8_MIN_QP (V4L2_CID_MPEG_MSM_VIDC_BASE + 36)
 #define V4L2_CID_MPEG_VIDC_VIDEO_VP8_MAX_QP (V4L2_CID_MPEG_MSM_VIDC_BASE + 37)
 #define V4L2_CID_MPEG_VIDC_VIDEO_CONCEAL_COLOR \
-		(V4L2_CID_MPEG_MSM_VIDC_BASE + 38) 
+		(V4L2_CID_MPEG_MSM_VIDC_BASE + 38)
 
 #define V4L2_CID_MPEG_VIDC_VIDEO_LTRMODE \
 		(V4L2_CID_MPEG_MSM_VIDC_BASE + 39)
@@ -1952,17 +1952,6 @@ enum v4l2_mpeg_vidc_video_ltrmode {
 
 #define V4L2_CID_MPEG_VIDC_VIDEO_BUFFER_SIZE_LIMIT \
 		(V4L2_CID_MPEG_MSM_VIDC_BASE + 48)
-
-#define V4L2_CID_MPEG_VIDC_VIDEO_PRIORITY \
-		(V4L2_CID_MPEG_MSM_VIDC_BASE + 73)
-
-enum v4l2_mpeg_vidc_video_priority {
-	V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_ENABLE = 0,
-	V4L2_MPEG_VIDC_VIDEO_PRIORITY_REALTIME_DISABLE = 1,
-};
-
-#define V4L2_CID_MPEG_VIDC_VIDEO_OPERATING_RATE \
-		(V4L2_CID_MPEG_MSM_VIDC_BASE + 75)
 
 /*  Camera class control IDs */
 #define V4L2_CID_CAMERA_CLASS_BASE 	(V4L2_CTRL_CLASS_CAMERA | 0x900)

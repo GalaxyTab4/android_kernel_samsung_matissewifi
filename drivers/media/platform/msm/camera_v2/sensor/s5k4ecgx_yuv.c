@@ -14,33 +14,39 @@
 #define NO_BURST // Enable no burst mode for Tunning
 #endif
 #include "s5k4ecgx.h"
+
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+#include "s5k4ecgx_regs_victor.h"
+#else
 #include "s5k4ecgx_regs.h"
+#endif
+
 #include "msm_sd.h"
 #include "camera.h"
 #include "msm_cci.h"
 #include "msm_camera_dt_util.h"
 #ifdef CONFIG_LOAD_FILE
 #define S5K4ECGX_WRITE_LIST(A) \
-					s5k4ecgx_regs_from_sd_tunning(A,s_ctrl,#A);
+			s5k4ecgx_regs_from_sd_tunning(A,s_ctrl,#A);
 
-#define S5K4ECGX_WRITE_LIST_BURST(A,B,C) \
-					s5k4ecgx_regs_from_sd_tunning(A,B,#A);
+#define S5K4ECGX_WRITE_LIST_BURST(A) \
+			s5k4ecgx_regs_from_sd_tunning(A,s_ctrl,#A);
 #else
 #define S5K4ECGX_WRITE_LIST(A) \
 			s_ctrl->sensor_i2c_client->i2c_func_tbl->i2c_write_conf_tbl( \
-				s_ctrl->sensor_i2c_client, A, \
-				ARRAY_SIZE(A), \
+				s_ctrl->sensor_i2c_client, A, ARRAY_SIZE(A), \
 				MSM_CAMERA_I2C_WORD_DATA); CDBG("REGSEQ *** %s", #A)
-#define S5K4ECGX_WRITE_LIST_BURST(A,B,C) \
-					 s5k4ecgx_sensor_burst_write(A,B,C); CDBG("REGSEQ *** BURST %s", #A)
+#define S5K4ECGX_WRITE_LIST_BURST(A) \
+			s5k4ecgx_sensor_burst_write(s_ctrl, A, ARRAY_SIZE(A)); \
+			CDBG("REGSEQ *** BURST %s", #A)
 #endif
 #define S5K4ECGX_WRITE_ADDR(A,B) \
 			s_ctrl->sensor_i2c_client->i2c_func_tbl->i2c_write( \
-            s_ctrl->sensor_i2c_client,A, B, MSM_CAMERA_I2C_WORD_DATA)
+				s_ctrl->sensor_i2c_client,A, B, MSM_CAMERA_I2C_WORD_DATA)
 
 #define S5K4ECGX_READ_ADDR(A,B) \
 			s_ctrl->sensor_i2c_client->i2c_func_tbl->i2c_read( \
-            s_ctrl->sensor_i2c_client,A, B, MSM_CAMERA_I2C_WORD_DATA)
+				s_ctrl->sensor_i2c_client,A, B, MSM_CAMERA_I2C_WORD_DATA)
 #ifdef CONFIG_LOAD_FILE
 #include <linux/vmalloc.h>
 #include <linux/fs.h>
@@ -55,6 +61,7 @@ void s5k4ecgx_regs_table_exit(void);
 #endif
 
 static struct s5k4ecgx_ctrl s5k4ecgx_ctrl;
+extern uint16_t rear_vendor_id;
 
 int s5k4ecgx_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 	struct msm_camera_slave_info *slave_info,
@@ -84,36 +91,36 @@ int s5k4ecgx_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0x0012, 0x0001, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+                pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+                rc = -EFAULT;
         }
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0x007A, 0x0000, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+                pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+                rc = -EFAULT;
         }
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0xA000, 0x0004, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+                pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+                rc = -EFAULT;
         }
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0xA062, 0x4000, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+                pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+                rc = -EFAULT;
         }
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0xA002, 0x0006, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+	        pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+                rc = -EFAULT;
         }
         if (sensor_i2c_client->i2c_func_tbl->i2c_write(
             sensor_i2c_client,0xA000, 0x0001, MSM_CAMERA_I2C_WORD_DATA) < 0) {
-          pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
-		  rc = -EFAULT;
+                pr_err("%s:%d Failed I2C write\n", __func__, __LINE__);
+		rc = -EFAULT;
         }
-		printk(" ---------*****************------------------------------\n");
-		usleep(100);
+        printk(" ---------*****************------------------------------\n");
+        usleep(100);
 	rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
 		sensor_i2c_client, 0xA006 /*slave_info->sensor_id_reg_addr*/,
 			&chipid, data_type);
@@ -121,9 +128,11 @@ int s5k4ecgx_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 	pr_err("%s: line %d chipid received after i2c read = 0x%X\n",
 		__func__, __LINE__, chipid);
 
-    pr_err("rc == %d \n", rc);
+        pr_err("rc == %d \n", rc);
 	printk("%s: read id: %x expected id: %x\n", __func__, chipid,
 		slave_info->sensor_id);
+	if (chipid)
+		rear_vendor_id = chipid;
 
 	if (chipid != slave_info->sensor_id) {
 		pr_err("s5k4ecgx_sensor_match_id chip id doesnot match\n");
@@ -131,14 +140,117 @@ int s5k4ecgx_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 	return 0;
 }
 
+int32_t s5k4ecgx_sensor_burst_write(struct msm_sensor_ctrl_t *s_ctrl, struct msm_camera_i2c_reg_conf *reg_settings , int size)
+{
+	int i;
+	int idx = 0;
+	int burst_flag = 0;
+	int err = -EINVAL;
+	uint16_t  subaddr;
+	uint16_t  value;
+	struct msm_camera_i2c_reg_conf def_reg_settings[]= { {0x00, 0x00,},};
+	static uint8_t burst_data[BURST_MODE_BUFFER_MAX_SIZE * 2] = {0};
+
+        // burst write related variables
+	struct msm_camera_i2c_burst_reg_array burst_reg_setting = { 0 ,};
+	struct msm_camera_i2c_reg_setting conf_array = {
+		.reg_setting = (void * ) &burst_reg_setting,
+		.size = 1,
+		.addr_type = MSM_CAMERA_I2C_WORD_ADDR,
+		.data_type = MSM_CAMERA_I2C_BURST_DATA,
+	};
+
+	CDBG("E");
+
+        // read the register settings array
+	for (i = 0; i < size; ++i) {
+		if (idx  >= BURST_MODE_BUFFER_MAX_SIZE) {
+			burst_flag = 0;
+
+			burst_reg_setting.reg_data = burst_data;
+			burst_reg_setting.reg_data_size = idx * 2;
+			idx = 0;
+
+			err = s_ctrl->sensor_i2c_client-> \
+				i2c_func_tbl->i2c_write_table( \
+				s_ctrl->sensor_i2c_client, &conf_array);
+			if (err < 0) {
+				pr_err("[%s:%d]Burst write fail!\n", __func__, __LINE__);
+				goto on_error;
+			}
+		}
+
+		// the register address
+		subaddr = reg_settings[i].reg_addr;
+
+		// the register value
+		value = reg_settings[i].reg_data;
+
+		if (burst_flag == 0) {
+			if ( (subaddr == BURST_REG) && \
+				(reg_settings[i+1].reg_addr == BURST_REG)) {
+				//burst mode start
+				burst_flag = 1;
+				burst_reg_setting.reg_addr = subaddr;
+				/* MSB has to go 1st for I2C write */
+				burst_data[idx * 2] = (value & 0xFF00) >> 8; /* MSB */
+				burst_data[idx * 2 + 1] = value & 0x00FF; /* LSB */
+				idx++;
+
+				continue;
+			}
+
+			// write the register setting
+			def_reg_settings[0].reg_addr = subaddr;
+			def_reg_settings[0].reg_data = value;
+			err = s_ctrl->sensor_i2c_client-> \
+				i2c_func_tbl->i2c_write_conf_tbl( \
+				s_ctrl->sensor_i2c_client, def_reg_settings, \
+				ARRAY_SIZE(def_reg_settings), MSM_CAMERA_I2C_WORD_DATA);
+
+		} else if (burst_flag == 1) {
+			burst_data[idx * 2] = (value & 0xFF00) >> 8; /* MSB */
+			burst_data[idx * 2 + 1] = value & 0x00FF; /* LSB */
+			idx++;
+
+			if ((subaddr == BURST_REG) && (i + 1 >= size || \
+				(reg_settings[i+1].reg_addr != BURST_REG))) {
+				// burst mode end.
+				burst_flag = 0;
+
+
+				burst_reg_setting.reg_data = burst_data;
+				burst_reg_setting.reg_data_size = idx * 2;
+
+				idx = 0;
+
+				err = s_ctrl->sensor_i2c_client-> \
+					i2c_func_tbl->i2c_write_table( \
+					s_ctrl->sensor_i2c_client, &conf_array);
+				if (err < 0) {
+					pr_err("[%s:%d]Burst write fail!\n", \
+					__func__, __LINE__);
+					goto on_error;
+				}
+			}
+		}
+	}
+
+	on_error:
+		if (unlikely(err < 0)) {
+			pr_err("[%s:%d] register set failed\n", __func__, __LINE__);
+		}
+	CDBG("X");
+	return err;
+}
 
 int32_t s5k4ecgx_set_ae_awb(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 {
 	if (mode) {
 		if (s5k4ecgx_ctrl.settings.ae_awb_lock == 0) {
 			CDBG("AWB_AE_LOCK");
-			if (s5k4ecgx_ctrl.settings.wb ==
-				CAMERA_WHITE_BALANCE_AUTO) {
+			if (s5k4ecgx_ctrl.settings.wb == CAMERA_WHITE_BALANCE_AUTO \
+				|| s5k4ecgx_ctrl.settings.wb == CAMERA_WHITE_BALANCE_OFF) {
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_ae_lock);
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_awb_lock);
 			} else {
@@ -149,8 +261,8 @@ int32_t s5k4ecgx_set_ae_awb(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 	} else {
 		if (s5k4ecgx_ctrl.settings.ae_awb_lock == 1) {
 			CDBG("AWB_AE_UNLOCK");
-			if (s5k4ecgx_ctrl.settings.wb ==
-				CAMERA_WHITE_BALANCE_AUTO) {
+			if (s5k4ecgx_ctrl.settings.wb == CAMERA_WHITE_BALANCE_AUTO \
+				|| s5k4ecgx_ctrl.settings.wb == CAMERA_WHITE_BALANCE_OFF) {
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_ae_unlock);
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_awb_unlock);
 			} else {
@@ -320,7 +432,62 @@ int32_t s5k4ecgx_set_scene_mode(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 	return rc;
 }
 
+#if defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN)\
+	|| defined (CONFIG_MACH_AFYONLTE_MTR)
+int32_t s5k4ecgx_set_white_balance(struct msm_sensor_ctrl_t *s_ctrl, int mode)
+{
+	int32_t rc = 0;
+	uint16_t value = 0;
+	CDBG("CAMSET -- WB is %d", mode);
 
+	S5K4ECGX_WRITE_ADDR(0x002C, 0x7000);
+	S5K4ECGX_WRITE_ADDR(0x002E, 0x04E6);
+	S5K4ECGX_READ_ADDR(0x0F12, &value);
+
+	S5K4ECGX_WRITE_ADDR(0x0028, 0x7000);
+	S5K4ECGX_WRITE_ADDR(0x002A, 0x04E6);
+
+	switch (mode) {
+	case CAMERA_WHITE_BALANCE_OFF:
+	case CAMERA_WHITE_BALANCE_AUTO:
+
+			value |= (0x1 << 3);
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_WB_Auto);
+		break;
+
+	case CAMERA_WHITE_BALANCE_INCANDESCENT:
+			value &= (~(0x1 << 3));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_WB_Tungsten);
+		break;
+
+	case CAMERA_WHITE_BALANCE_FLUORESCENT:
+			value &= (~(0x1 << 3));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_WB_Fluorescent);
+		break;
+
+	case CAMERA_WHITE_BALANCE_DAYLIGHT:
+			value &= (~(0x1 << 3));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_WB_Sunny);
+		break;
+
+	case CAMERA_WHITE_BALANCE_CLOUDY_DAYLIGHT:
+			value &= (~(0x1 << 3));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_WB_Cloudy);
+		break;
+	default:
+		CDBG("%s: Setting %d is invalid", __func__, mode);
+		rc = 0;
+	}
+
+	return rc;
+}
+#else
 int32_t s5k4ecgx_set_white_balance(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 {
 	int32_t rc = 0;
@@ -354,6 +521,7 @@ int32_t s5k4ecgx_set_white_balance(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 
 	return rc;
 }
+#endif
 
 int32_t s5k4ecgx_set_metering(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 {
@@ -380,6 +548,55 @@ int32_t s5k4ecgx_set_metering(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 	return rc;
 }
 
+#if defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN)\
+	|| defined (CONFIG_MACH_AFYONLTE_MTR)
+int32_t s5k4ecgx_set_iso(struct msm_sensor_ctrl_t *s_ctrl, int mode)
+{
+	int32_t rc = 0;
+	uint16_t value = 0;
+	CDBG("CAMSET -- iso is %d", mode);
+
+	S5K4ECGX_WRITE_ADDR(0x002C, 0x7000);
+	S5K4ECGX_WRITE_ADDR(0x002E, 0x04E6);
+	S5K4ECGX_READ_ADDR(0x0F12, &value);
+
+	S5K4ECGX_WRITE_ADDR(0x0028, 0x7000);
+	S5K4ECGX_WRITE_ADDR(0x002A, 0x04E6); 
+
+	switch (mode) {
+		case CAMERA_ISO_MODE_AUTO:
+			value |= (0x1 << 5);
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_ISO_Auto);
+			break;
+		case CAMERA_ISO_MODE_50:
+			value &=  (~(0x1 << 5));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_ISO_50);
+			break;
+		case CAMERA_ISO_MODE_100:
+			value &=  (~(0x1 << 5));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_ISO_100);
+			break;
+		case CAMERA_ISO_MODE_200:
+			value &=  (~(0x1 << 5));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_ISO_200);
+			break;
+		case CAMERA_ISO_MODE_400:
+			value &=  (~(0x1 << 5));
+			S5K4ECGX_WRITE_ADDR(0x0F12, value);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_ISO_400);
+			break;
+	default:
+		CDBG("%s: Setting %d is invalid\n", __func__, mode);
+		rc = 0;
+	}
+
+	return rc;
+}
+#else
 int32_t s5k4ecgx_set_iso(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 {
 	int32_t rc = 0;
@@ -407,6 +624,7 @@ int32_t s5k4ecgx_set_iso(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 
 	return rc;
 }
+#endif
 
 int32_t s5k4ecgx_get_light_level(struct msm_sensor_ctrl_t *s_ctrl)
 {
@@ -432,58 +650,22 @@ int32_t s5k4ecgx_get_flash_status(void)
 	return flash_status;
 }
 
-int32_t s5k4ecgx_set_resolution(struct msm_sensor_ctrl_t *s_ctrl, int mode)
-{
-	int32_t rc = 0;
-	CDBG("CAMSET -- resolution is %d \n", mode);
-
-	switch (mode) {
-	case MSM_SENSOR_RES_FULL:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_capture_2560_1920);
-		break;
-	case MSM_SENSOR_RES_QTR:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_1280_960);
-		break;
-	case MSM_SENSOR_RES_2:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_1280_720);
-		break;
-	case MSM_SENSOR_RES_3:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_800_480);
-		break;
-	case MSM_SENSOR_RES_4:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_720_480);
-		break;
-	case MSM_SENSOR_RES_5:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_640_480);
-		break;
-	case MSM_SENSOR_RES_6:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_320_240);
-		break;
-	case MSM_SENSOR_RES_7:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_176_144);
-		break;
-	default:
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_1280_960);
-		CDBG("%s: Setting default size 1280x960 \n", __func__);
-	}
-	return rc;
-}
-
 void s5k4ecgx_check_ae_stable(struct msm_sensor_ctrl_t *s_ctrl)
 {
 	unsigned short ae_stable = 0;
 	int ae_count = 0;
 
-	msleep(250);
-	while (ae_count++ < 20) {
+	while (ae_count++ < 7) {
 		S5K4ECGX_WRITE_ADDR(0x002C, 0x7000);
 		S5K4ECGX_WRITE_ADDR(0x002E, 0x2C74);
 		S5K4ECGX_READ_ADDR(0x0F12, &ae_stable);
-		if (ae_stable == 0x01)
+		if (ae_stable == 0x01) {
+			CDBG("ae_stabel count[%d]\n", ae_count);
 			break;
-		msleep(25);
+		}
+		msleep(30);
 	}
-	if (ae_count > 4) {
+	if (ae_count > 7) {
 		CDBG("AE NOT STABLE");
 	}
 }
@@ -508,9 +690,9 @@ int32_t s5k4ecgx_set_af_mode(struct msm_sensor_ctrl_t *s_ctrl, int mode)
 
 int32_t s5k4ecgx_set_af_status(struct msm_sensor_ctrl_t *s_ctrl, int status, int initial_pos)
 {
-	int32_t rc = 0;
+	int32_t rc = SENSOR_AF_CANCEL;
 	CDBG("CAMSET -- set_af_status %d, init_pos =%d", status, initial_pos);
-	if (status == 1) {
+	if (status == SENSOR_AF_START) {
 		unsigned int cur_lux = 0;
 		CDBG("S5K4ECGX_AF_START");
 		cur_lux = s5k4ecgx_get_light_level(s_ctrl);
@@ -525,30 +707,69 @@ int32_t s5k4ecgx_set_af_status(struct msm_sensor_ctrl_t *s_ctrl, int status, int
 		if (s5k4ecgx_get_flash_status()) {
 			S5K4ECGX_WRITE_LIST(s5k4ecgx_FAST_AE_On);
 			S5K4ECGX_WRITE_LIST(s5k4ecgx_Pre_Flash_On);
+			s5k4ecgx_ctrl.settings.is_preflash = 1;
+			CDBG("Turn on the pre-flash\n");
 			s5k4ecgx_set_flash(MSM_CAMERA_LED_LOW);
-			//s5k4ecgx_check_ae_stable(s_ctrl);
+			rc = SENSOR_AF_PRE_FLASH_ON;
+		} else {
+			s5k4ecgx_set_ae_awb(s_ctrl, 1);
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_af);
+			rc = SENSOR_AF_START;
 		}
-		s5k4ecgx_set_ae_awb(s_ctrl, 1);
-		S5K4ECGX_WRITE_LIST(s5k4ecgx_af);
 
-	} else if ( (status == 2) ) {
-		if( s5k4ecgx_get_flash_status() ) {
-			CDBG("Turn off the flash\n");
+	} else if ( (status == SENSOR_AF_PRE_FLASH_OFF) ) {
+		if( s5k4ecgx_ctrl.settings.is_preflash == 1 ) {
+			CDBG("Turn off the pre-flash\n");
 			S5K4ECGX_WRITE_LIST(s5k4ecgx_FAST_AE_Off);
+#if !defined(CONFIG_MACH_VICTORLTE_CTC)
+			if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_AUTO){
+				s5k4ecgx_set_ae_awb(s_ctrl, 0);
+			}
+#endif
 			S5K4ECGX_WRITE_LIST(s5k4ecgx_Pre_Flash_Off);
 			s5k4ecgx_set_flash(MSM_CAMERA_LED_OFF);
+			s5k4ecgx_ctrl.settings.is_preflash = 0;
 		}
-		if(s5k4ecgx_ctrl.settings.is_touchaf == 1) {
-			if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_AUTO){
-			    s5k4ecgx_set_ae_awb(s_ctrl, 0);
+#if defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN) \
+	|| defined (CONFIG_MACH_AFYONLTE_MTR)
+		else {
+			if (s5k4ecgx_ctrl.settings.is_touchaf == 1 &&
+				s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_AUTO) {
+					CDBG("unlock AE/AWB in Autofocus Finish\n");
+					s5k4ecgx_set_ae_awb(s_ctrl, 0);
 			}
-			s5k4ecgx_ctrl.settings.is_touchaf = 0;
 		}
-	}else {
+#endif
+		rc = SENSOR_AF_PRE_FLASH_OFF;
+	} else if (status == SENSOR_AF_PRE_FLASH_AE_STABLE &&
+			s5k4ecgx_ctrl.settings.is_preflash == 1) {
+
+		s5k4ecgx_check_ae_stable(s_ctrl);
+		s5k4ecgx_set_ae_awb(s_ctrl, 1);
+		S5K4ECGX_WRITE_LIST(s5k4ecgx_af);
+		rc = SENSOR_AF_START;
+
+	} else {
+
 		CDBG("S5K4ECGX_AF_ABORT\n");
 		s5k4ecgx_set_af_mode(s_ctrl, s5k4ecgx_ctrl.settings.focus_mode);
 		s5k4ecgx_set_ae_awb(s_ctrl, 0);
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+		S5K4ECGX_WRITE_LIST(s5k4ecgx_af_cancel);
+#endif
+		rc = SENSOR_AF_CANCEL;
 	}
+
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+	if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_AUTO || s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_NIGHT){
+		if(s5k4ecgx_ctrl.settings.is_touchaf == 1){
+			CDBG("[KEJ_DBG]set_ae_awb in Autofocus Finish\n");
+			s5k4ecgx_set_ae_awb(s_ctrl, 0);
+			s5k4ecgx_ctrl.settings.is_touchaf = 0;
+		}
+	}
+#endif
+
 	return rc;
 }
 
@@ -653,6 +874,60 @@ int32_t s5k4ecgx_set_touchaf_pos(struct msm_sensor_ctrl_t *s_ctrl,
 	return 0;
 }
 
+int32_t s5k4ecgx_wait_preview_stable(struct msm_sensor_ctrl_t *s_ctrl)
+{
+	int try = 0;
+	unsigned short is_captured = 0;
+
+	do {
+		if (try)
+			mdelay(10);
+
+		S5K4ECGX_WRITE_ADDR(0x002C, 0x7000);
+		//S5K4ECGX_WRITE_ADDR(0x002E, 0x215F);
+		S5K4ECGX_WRITE_ADDR(0x002E, 0x215E);
+		S5K4ECGX_READ_ADDR(0x0F12, &is_captured);
+		try++;
+	} while(is_captured == 0x0100 && try <= 50);
+
+
+	if (is_captured == 0x0100)
+		pr_err("%s:%d maximum tried!\n", __func__, __LINE__);
+
+	CDBG("try[%d]\n", try);
+
+	return 0;
+}
+
+int32_t s5k4ecgx_wait_capture_stable(struct msm_sensor_ctrl_t *s_ctrl)
+{
+	int try = 0;
+	unsigned short is_captured = 0;
+
+	do {
+		if (try)
+			mdelay(10);
+
+		S5K4ECGX_WRITE_ADDR(0x002C, 0x7000);
+		//S5K4ECGX_WRITE_ADDR(0x002E, 0x215F);
+		S5K4ECGX_WRITE_ADDR(0x002E, 0x215E);
+		S5K4ECGX_READ_ADDR(0x0F12, &is_captured);
+		try++;
+	} while(is_captured != 0x0100 && try <= 50);
+
+
+	if (is_captured != 0x0100)
+		pr_err("%s:%d maximum tried!\n", __func__, __LINE__);
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+	if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_NIGHT){
+		msleep(50);
+	}
+#endif
+	CDBG("try[%d]\n", try);
+
+	return 0;
+}
+
 int32_t s5k4ecgx_set_exif(struct msm_sensor_ctrl_t *s_ctrl )
 {
 	unsigned short msb = 0;
@@ -736,15 +1011,46 @@ int32_t s5k4ecgx_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 		s5k4ecgx_regs_table_init("/data/s5k4ecgx_regs.h");
 		pr_err("/data/s5k4ecgx_yuv.h inside CFG_SET_INIT_SETTING\n");
 #endif
-		rc = S5K4ECGX_WRITE_LIST(s5k4ecgx_init_regs);
+		rc = S5K4ECGX_WRITE_LIST_BURST(s5k4ecgx_init_regs);
 		break;
 	case CFG_SET_RESOLUTION:
 		s5k4ecgx_ctrl.settings.resolution = *((int32_t  *)cdata->cfg.setting);
 		CDBG("CFG_SET_RESOLUTION  res = %d\n " , s5k4ecgx_ctrl.settings.resolution);
+		if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_CAPTURE ){
+			if (s5k4ecgx_get_flash_status()) {
+				s5k4ecgx_set_flash(MSM_CAMERA_LED_HIGH);
+				S5K4ECGX_WRITE_LIST(s5k4ecgx_Main_Flash_On);
+			} else if ((s5k4ecgx_ctrl.settings.flash_mode == CAMERA_FLASH_AUTO)
+					&& (!s5k4ecgx_ctrl.settings.lowLight)) {
+				unsigned short cur_lux;
+				cur_lux = s5k4ecgx_get_light_level(s_ctrl);
+				CDBG("light level = %d\n", cur_lux);
+				if (cur_lux <= LOW_LIGHT_LEVEL) {
+					CDBG("LOW LUX\n");
+					s5k4ecgx_ctrl.settings.lowLight = 1;
+					s5k4ecgx_set_flash(MSM_CAMERA_LED_HIGH);
+					S5K4ECGX_WRITE_LIST(s5k4ecgx_Main_Flash_On);
+				}
+			}
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_snapshot_regs);
+			s5k4ecgx_wait_capture_stable(s_ctrl);
+			s5k4ecgx_set_exif(s_ctrl);
+		} else if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_PREVIEW) {
+			if (s5k4ecgx_ctrl.prev_mode == CAMERA_MODE_CAPTURE){
+				S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_regs);
+			}
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+			if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_NIGHT){
+				msleep(50);
+			}
+#else
+			s5k4ecgx_wait_preview_stable(s_ctrl);
+#endif
+		}
+
 		break;
 	case CFG_SET_STOP_STREAM:
-		CDBG(" CFG_SET_STOP_STREAM writing stop stream registers: s5k4ecgx_stop_stream \n");
-		S5K4ECGX_WRITE_LIST(s5k4ecgx_stream_stop_reg);
+		CDBG("CFG_SET_STOP_STREAM\n");
 		if(s5k4ecgx_get_flash_status() ){
 			if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_CAPTURE ){
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_Main_Flash_Off);
@@ -757,39 +1063,62 @@ int32_t s5k4ecgx_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 				s5k4ecgx_ctrl.settings.lowLight = 0;
 			}
 		}
+
+		if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_PREVIEW) {
+			if (s5k4ecgx_ctrl.settings.is_preflash == 1) {
+				CDBG("Turn off the pre-flash\n");
+				S5K4ECGX_WRITE_LIST(s5k4ecgx_FAST_AE_Off);
+				if(s5k4ecgx_ctrl.settings.scenemode == CAMERA_SCENE_AUTO){
+					s5k4ecgx_set_ae_awb(s_ctrl, 0);
+				}
+				S5K4ECGX_WRITE_LIST(s5k4ecgx_Pre_Flash_Off);
+				s5k4ecgx_set_flash(MSM_CAMERA_LED_OFF);
+				s5k4ecgx_ctrl.settings.is_preflash = 0;
+			}
+		}
+
 		break;
 	case CFG_SET_START_STREAM:
-		CDBG(" CFG_SET_START_STREAM writing start stream registers: s5k4ecgx_start_stream start   \n");
-		if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_CAPTURE ){
-			CDBG("writing *** s5k4ecgx_Capture_2560_1920\n");
-			if (s5k4ecgx_get_flash_status()) {
-				s5k4ecgx_set_flash(MSM_CAMERA_LED_HIGH);
-				S5K4ECGX_WRITE_LIST(s5k4ecgx_Main_Flash_On);
-			}
-			S5K4ECGX_WRITE_LIST(s5k4ecgx_capture_2560_1920);
-			S5K4ECGX_WRITE_LIST(s5k4ecgx_snapshot_regs);
-			s5k4ecgx_set_exif(s_ctrl);
-		} else if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_RECORDING) {
+		CDBG("CFG_SET_START_STREAM");
+		if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_RECORDING) {
 			if (s5k4ecgx_get_flash_status()) {
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_FAST_AE_On);
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_Pre_Flash_On);
 				s5k4ecgx_set_flash(MSM_CAMERA_LED_LOW);
+				msleep(380);
 				s5k4ecgx_check_ae_stable(s_ctrl);
 			}
-				s5k4ecgx_set_resolution( s_ctrl , s5k4ecgx_ctrl.settings.resolution);
-				S5K4ECGX_WRITE_LIST(s5k4ecgx_fps_30);
-				S5K4ECGX_WRITE_LIST(s5k4ecgx_camcorder);
-		} else {
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+			s5k4ecgx_set_af_mode(s_ctrl, 0);
+#endif
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_fps_30);
+			S5K4ECGX_WRITE_LIST_BURST(s5k4ecgx_camcorder);
+		} else if (s5k4ecgx_ctrl.op_mode == CAMERA_MODE_PREVIEW) {
 			CDBG("prev_mode = %d\n", s5k4ecgx_ctrl.prev_mode);
 			s5k4ecgx_set_ae_awb(s_ctrl, 0);
-			s5k4ecgx_set_resolution( s_ctrl , s5k4ecgx_ctrl.settings.resolution);
 			if ((s5k4ecgx_ctrl.prev_mode == CAMERA_MODE_RECORDING)) {
 				S5K4ECGX_WRITE_LIST(s5k4ecgx_fps_auto);
-				S5K4ECGX_WRITE_LIST(s5k4ecgx_camcorder_disable);
+				S5K4ECGX_WRITE_LIST_BURST(s5k4ecgx_camcorder_disable);
 			}
-			S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_regs);
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+			if(s5k4ecgx_ctrl.settings.scenemode != CAMERA_SCENE_NIGHT){
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_fps_auto);
+			}
+#endif
+
+			if (s5k4ecgx_ctrl.streamon == 0) {
+				s5k4ecgx_set_exposure_compensation(s_ctrl,
+						s5k4ecgx_ctrl.settings.exposure);
+
+				s5k4ecgx_set_white_balance(s_ctrl,
+						s5k4ecgx_ctrl.settings.wb);
+
+				s5k4ecgx_set_iso(s_ctrl, s5k4ecgx_ctrl.settings.iso);
+			}
+
+			s5k4ecgx_ctrl.streamon = 1;
 		}
-		s5k4ecgx_ctrl.streamon = 1;
+
 		break;
 	case CFG_SET_SLAVE_INFO: {
 		struct msm_camera_sensor_slave_info sensor_slave_info;
@@ -948,6 +1277,7 @@ int32_t s5k4ecgx_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 		s5k4ecgx_ctrl.settings.flash_mode = CAMERA_FLASH_OFF;
 		s5k4ecgx_ctrl.settings.lowLight = 0;
 		s5k4ecgx_ctrl.settings.is_touchaf = 0;
+		s5k4ecgx_ctrl.settings.is_preflash = 0;
 		if (s_ctrl->func_tbl->sensor_power_up) {
                         CDBG("CFG_POWER_UP");
 			rc = s_ctrl->func_tbl->sensor_power_up(s_ctrl,
@@ -960,18 +1290,30 @@ int32_t s5k4ecgx_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 		break;
 
 	case CFG_POWER_DOWN:
-		CDBG("CFG_POWER_DOWN  \n");		
-		 if (s_ctrl->func_tbl->sensor_power_down) {
-                        CDBG("CFG_POWER_DOWN");
+		CDBG("CFG_POWER_DOWN  \n");
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+		if(s5k4ecgx_ctrl.settings.focus_mode == CAMERA_AF_MACRO){
+			S5K4ECGX_WRITE_LIST(s5k4ecgx_normal_af);
+		}
+		S5K4ECGX_WRITE_LIST(s5k4ecgx_preview_regs);
+		msleep(300);
+		S5K4ECGX_WRITE_LIST(s5k4ecgx_focus_mode_auto);
+		msleep(200);
+#else
+		S5K4ECGX_WRITE_LIST(s5k4ecgx_focus_mode_auto);
+#endif
+		if (s_ctrl->func_tbl->sensor_power_down) {
+			CDBG("CFG_POWER_DOWN");
 			rc = s_ctrl->func_tbl->sensor_power_down(
 				s_ctrl,
 				&s_ctrl->sensordata->power_info,
 				s_ctrl->sensor_device_type,
 				s_ctrl->sensor_i2c_client);
-                } else
+		} else
 			rc = -EFAULT;
+
 #ifdef CONFIG_LOAD_FILE
-			s5k4ecgx_regs_table_exit();
+		s5k4ecgx_regs_table_exit();
 #endif
 		break;
 
@@ -1034,11 +1376,13 @@ int32_t s5k4ecgx_sensor_native_control(struct msm_sensor_ctrl_t *s_ctrl,
 	switch (cam_info->mode) {
 	case EXT_CAM_EV:
 		s5k4ecgx_ctrl.settings.exposure = (cam_info->value_1);
-		s5k4ecgx_set_exposure_compensation(s_ctrl, s5k4ecgx_ctrl.settings.exposure);
+		if (s5k4ecgx_ctrl.streamon == 1)
+			s5k4ecgx_set_exposure_compensation(s_ctrl, s5k4ecgx_ctrl.settings.exposure);
 		break;
 	case EXT_CAM_WB:
 		s5k4ecgx_ctrl.settings.wb = (cam_info->value_1);
-		s5k4ecgx_set_white_balance(s_ctrl, s5k4ecgx_ctrl.settings.wb);
+		if (s5k4ecgx_ctrl.streamon == 1)
+			s5k4ecgx_set_white_balance(s_ctrl, s5k4ecgx_ctrl.settings.wb);
 		break;
 	case EXT_CAM_METERING:
 		s5k4ecgx_ctrl.settings.metering = (cam_info->value_1);
@@ -1046,8 +1390,8 @@ int32_t s5k4ecgx_sensor_native_control(struct msm_sensor_ctrl_t *s_ctrl,
 		break;
 	case EXT_CAM_ISO:
 		s5k4ecgx_ctrl.settings.iso = (cam_info->value_1);
-		CDBG("EXT_CAM_ISO : %d", s5k4ecgx_ctrl.settings.iso);
-		s5k4ecgx_set_iso(s_ctrl, s5k4ecgx_ctrl.settings.iso);
+		if (s5k4ecgx_ctrl.streamon == 1)
+			s5k4ecgx_set_iso(s_ctrl, s5k4ecgx_ctrl.settings.iso);
 		break;
 	case EXT_CAM_EFFECT:
 		s5k4ecgx_ctrl.settings.effect = (cam_info->value_1);
@@ -1069,7 +1413,11 @@ int32_t s5k4ecgx_sensor_native_control(struct msm_sensor_ctrl_t *s_ctrl,
 		break;
 	case EXT_CAM_SET_AF_STATUS:
 		/*CDBG("EXT_CAM_SET_AF_STATUS: %d : %d\n", cam_info->value_1, cam_info->value_2);*/
-		s5k4ecgx_set_af_status(s_ctrl, cam_info->value_1, cam_info->value_2);
+		cam_info->value_1 = s5k4ecgx_set_af_status(s_ctrl, cam_info->value_1,
+							   cam_info->value_2);
+		if (!copy_to_user((void *)argp, (const void *)&cam_info,
+				   sizeof(cam_info)))
+			pr_err("copy failed");
 		break;
 	case EXT_CAM_SET_TOUCHAF_POS:
 		/*CDBG("EXT_CAM_SET_TOUCHAF_POS: %d : %d", cam_info->value_1, cam_info->value_2);*/
@@ -1083,14 +1431,18 @@ int32_t s5k4ecgx_sensor_native_control(struct msm_sensor_ctrl_t *s_ctrl,
 	case EXT_CAM_GET_AF_STATUS:
 		/*CDBG("EXT_CAM_GET_AF_STATUS: %d\n", cam_info->value_1);*/
 		cam_info->value_1 = s5k4ecgx_get_af_status(s_ctrl, cam_info->value_1);
-		if (!copy_to_user((void *)argp,
-	            (const void *)&cam_info,
-				sizeof(cam_info)))
-		pr_err("copy failed");
+		if (!copy_to_user((void *)argp, (const void *)&cam_info,
+				   sizeof(cam_info)))
+			pr_err("copy failed");
 		break;
 	case EXT_CAM_FLASH_MODE:
-		CDBG("EXT_CAM_FLASH_MODE  \n");
+		/*CDBG("EXT_CAM_FLASH_MODE  = %d\n", (cam_info->value_1));*/
 		s5k4ecgx_ctrl.settings.flash_mode = (cam_info->value_1);
+		if((cam_info->value_1) == CAMERA_FLASH_TORCH) {
+			s5k4ecgx_set_flash(MSM_CAMERA_LED_LOW);
+		} else {
+			s5k4ecgx_set_flash(MSM_CAMERA_LED_OFF);
+		}
 		break;
 	case EXT_CAM_SET_FLASH:
 		CDBG("EXT_CAM_SET_FLASH = %d\n", (cam_info->value_1));
@@ -1110,6 +1462,12 @@ int32_t s5k4ecgx_sensor_native_control(struct msm_sensor_ctrl_t *s_ctrl,
 			pr_err("copy failed");
 
 		break;
+#if defined(CONFIG_MACH_VICTORLTE_CTC)
+	case EXT_CAM_SET_AE_AWB:
+		CDBG("EXT_CAM_SET_AE_AWB = %d\n", (cam_info->value_1));
+		s5k4ecgx_set_ae_awb(s_ctrl, cam_info->value_1);
+		break;
+#endif
 	default:
 		rc = -EFAULT;
 		break;

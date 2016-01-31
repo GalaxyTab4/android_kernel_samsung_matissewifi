@@ -4989,7 +4989,7 @@ static struct msm_camera_i2c_reg_conf sr352_Init_Reg[] = {
 {0x28, 0x40,},
 {0x29, 0x37,},//Outdoor 1240 add 720p
 {0x2a, 0x70,},
-{0x2b, 0x9f,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x2b, 0xbf,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x2c, 0x71,},
 {0x2d, 0x1a,},//Outdoor 1271 //Bayer HPF Gain
 {0x2e, 0x72,},
@@ -13290,7 +13290,7 @@ static struct msm_camera_i2c_reg_conf sr352_Init_Reg_01[] = {
 {0x28, 0x40,},
 {0x29, 0x37,},//Outdoor 1240 add 720p
 {0x2a, 0x70,},
-{0x2b, 0x9f,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x2b, 0xbf,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x2c, 0x71,},
 {0x2d, 0x1a,},//Outdoor 1271 //Bayer HPF Gain
 {0x2e, 0x72,},
@@ -16668,8 +16668,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x768[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16770,8 +16771,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x768_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16872,8 +16874,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x576[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16986,8 +16989,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x576_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17100,8 +17104,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_640x480[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17212,8 +17217,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_640x480_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17327,7 +17333,7 @@ static struct msm_camera_i2c_reg_conf sr352_Capture_2048_1536[] ={
 {0x03, 0x11,},
 {0x10, 0x1F,},	//Bit[4]=Hi
 {0x03, 0x12,},
-{0x70, 0x9F,},	//Bit[0]=Hi
+{0x70, 0xbF,},	//Bit[0]=Hi
 
 //------------------------------------------------//
 //TAP Capture Setting
@@ -17441,7 +17447,7 @@ static struct msm_camera_i2c_reg_conf sr352_Capture_2048_1536_01[] ={
 {0x03, 0x11,},
 {0x10, 0x1F,},	//Bit[4]=Hi
 {0x03, 0x12,},
-{0x70, 0x9F,},	//Bit[0]=Hi
+{0x70, 0xbF,},	//Bit[0]=Hi
 
 //------------------------------------------------//
 //TAP Capture Setting
@@ -19530,7 +19536,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 // 11 Page D-LPF (H/W)
 ///////////////////////////////////
 {0x03, 0x11,}, //11 page
-{0x10, 0x0f,}, //D-LPF ENB //DPC marker
+{0x10, 0x1f,}, //D-LPF ENB //DPC marker
 
 {0x12, 0x28,}, //20121120 character long line detection th
 {0x13, 0x2c,}, //20121120 character short line detection th
@@ -19558,10 +19564,10 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x2c, 0x08,}, //middle_h_th
 {0x2d, 0x08,}, //middle_l_th
 {0x2e, 0x06,}, //dark_th
-{0x2f, 0x10,}, //20121127 _DPC TH
-{0x30, 0x10,}, //20121127 _DPC TH
-{0x31, 0x10,}, //20121127 _DPC TH
-{0x32, 0x10,}, //20121127 _DPC TH
+{0x2f, 0x40,}, //20121127 _DPC TH
+{0x30, 0x40,}, //20121127 _DPC TH
+{0x31, 0x40,}, //20121127 _DPC TH
+{0x32, 0x40,}, //20121127 _DPC TH
 {0x41, 0x88,}, //GBGR Cut off //46
 
 ///////////////////////////////////
@@ -22348,7 +22354,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Outdoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xbf,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Outdoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -23226,7 +23232,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Indoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Indoor 1270 // Bayer Sharpness ENB add
+{0x25, 0xbf,}, //Indoor 1270 // Bayer Sharpness ENB add
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Indoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -24104,7 +24110,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark1 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark1 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -24982,7 +24988,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark2 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark2 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -27542,7 +27548,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 // 11 Page D-LPF (H/W)
 ///////////////////////////////////
 {0x03, 0x11,}, //11 page
-{0x10, 0x0f,}, //D-LPF ENB //DPC marker
+{0x10, 0x1f,}, //D-LPF ENB //DPC marker
 
 {0x12, 0x28,}, //20121120 character long line detection th
 {0x13, 0x2c,}, //20121120 character short line detection th
@@ -27570,10 +27576,10 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x2c, 0x08,}, //middle_h_th
 {0x2d, 0x08,}, //middle_l_th
 {0x2e, 0x06,}, //dark_th
-{0x2f, 0x10,}, //20121127 _DPC TH
-{0x30, 0x10,}, //20121127 _DPC TH
-{0x31, 0x10,}, //20121127 _DPC TH
-{0x32, 0x10,}, //20121127 _DPC TH
+{0x2f, 0x40,}, //20121127 _DPC TH
+{0x30, 0x40,}, //20121127 _DPC TH
+{0x31, 0x40,}, //20121127 _DPC TH
+{0x32, 0x40,}, //20121127 _DPC TH
 {0x41, 0x88,}, //GBGR Cut off //46
 
 ///////////////////////////////////
@@ -30360,7 +30366,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Outdoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xbf,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Outdoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -31238,7 +31244,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Indoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Indoor 1270 // Bayer Sharpness ENB add
+{0x25, 0xbf,}, //Indoor 1270 // Bayer Sharpness ENB add
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Indoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -32116,7 +32122,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark1 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark1 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -32994,7 +33000,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark2 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark2 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -33718,6 +33724,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_30fps[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0x80,},	//Patch Weight Off B[6]
+{0x21, 0x20,},
+{0x22, 0x20,},
+{0x23, 0x20,},
 {0x36, 0x1e,},	//Max 30fps
 {0x37, 0x1e,},	//Max 30fps
 
@@ -33802,6 +33811,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_30fps_01[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0x80,},	//Patch Weight Off B[6]
+{0x21, 0x20,},
+{0x22, 0x20,},
+{0x23, 0x20,},
 {0x36, 0x1e,},	//Max 30fps
 {0x37, 0x1e,},	//Max 30fps
 
@@ -33877,6 +33889,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_modeOff[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0xc0,},	//Patch Weight On B[6]
+{0x21, 0x49,},
+{0x22, 0x53,},
+{0x23, 0x78,},
 {0x36, 0x08,},	//Max 8fps
 {0x37, 0x08,},	//Max 8fps
 
@@ -33956,6 +33971,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_modeOff_01[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0xc0,},	//Patch Weight On B[6]
+{0x21, 0x49,},
+{0x22, 0x53,},
+{0x23, 0x78,},
 {0x36, 0x08,},	//Max 8fps
 {0x37, 0x08,},	//Max 8fps
 
@@ -36557,3 +36575,166 @@ static struct msm_camera_i2c_reg_conf sr352_AEAWB_Unlock_50Hz[] = {
 {0xff, 0x0a,}, //delay 100ms
 };
 
+#if defined(CONFIG_MACH_MATISSE3G_OPEN) || defined(CONFIG_MACH_MATISSEWIFI_OPEN)
+static struct msm_camera_i2c_reg_conf sr352_60hz_setting[] = {
+
+{0x03, 0x00,},
+{0x01, 0x00,},
+{0xff, 0x02,},
+
+{0x03, 0x20,},
+{0x10, 0xad,}, //50hz bd, 60hz ad
+{0x20, 0x00,}, //Start ExpTime 120fps
+{0x21, 0x06,},
+{0x22, 0xd9,},
+{0x23, 0x20,},
+
+{0x03, 0xc1,},
+{0x10, 0x06,}, // ssd tranfer disable
+{0xff, 0x02,}, // 20ms
+
+{0x03, 0x00,},
+{0x01, 0x01,},	// Sleep on
+
+{0x03, 0xc1,},
+{0x10, 0x07,}, // ssd tranfer enable
+
+///////////////////////////////////////////////////////////////////////////////
+// C7 Page (AE)
+///////////////////////////////////////////////////////////////////////////////
+//Shutter Setting
+{0x03, 0xc7,},
+{0x10, 0x50,},	//AE Off (Band Off) 50hz 70, 60hz 50
+{0x12, 0x30,}, // Fast speed
+{0x15, 0xc0,}, // SSD Patch Weight Y Mean On
+
+{0x1e, 0x03,}, // Band1 Step
+{0x1f, 0x06,}, // Band2 Step
+{0x20, 0x08,}, // Band3 Step
+
+{0x21, 0x49,}, // Band1 Gain 30fps
+{0x22, 0x53,}, // Band2 Gain 15fps
+{0x23, 0x78,},// Band3 Gain 12fps
+
+{0x36, 0x08,}, // Max 8fps
+{0x37, 0x08,}, // Max 8fps
+
+{0x3d, 0x22,}, // YTh Lock, Unlock0
+
+{0x11, 0x01,}, // B[1]Initial Speed Up, B[0]AE Reset
+{0x70, 0x02,}, // 50hz 82, 60hz 02
+{0xff, 0x01,},
+{0x4C, 0x00,},//SW ExpMin	 = 8800
+{0x4D, 0x00,},
+{0x4E, 0x22,},
+{0x4F, 0x60,},
+
+{0x44, 0x00,}, //Start ExpTime 120fps
+{0x45, 0x06,},
+{0x46, 0xd9,},
+{0x47, 0x20,},
+
+{0xa7, 0x48,}, //Start ExpTime 120fps float
+{0xa8, 0xdb,},
+{0xa9, 0x24,},
+{0xaa, 0x00,},
+
+{0x03, 0x20,}, //HW ExpMin  = 8800
+{0x28, 0x00,},
+{0x29, 0x22,},
+{0x2A, 0x60,},
+
+{0x03, 0xc7,},
+{0x10, 0xd0,},	//AE On 50hz f0, 60hz d0
+
+};
+
+static struct msm_camera_i2c_reg_conf sr352_AEAWB_Lock_60Hz[] = {
+{0x03, 0xc7,},
+{0x10, 0x50,},	//AE Off 50hz 70, 60hz 50
+{0x03, 0xc8,},	//AWB Off
+{0x10, 0x52,},
+{0xff, 0x0a,}, //delay 100ms
+};
+
+static struct msm_camera_i2c_reg_conf sr352_AEAWB_Unlock_60Hz[] = {
+{0x03, 0xc7,},
+{0x10, 0xd0,},	//AE On 50hz f0, 60hz d0
+{0x03, 0xc8,},
+{0x10, 0xd2,}, //AWB On
+{0xff, 0x0a,}, //delay 100ms
+};
+
+static struct msm_camera_i2c_reg_conf sr352_HD_60hz_setting[] = {
+
+{0x03, 0x00,},
+{0x01, 0x00,},
+{0xff, 0x02,},
+
+{0x03, 0x20,},
+{0x10, 0xad,}, //50hz bd, 60hz ad
+{0x20, 0x00,}, //Start ExpTime 120fps // HD 86MHz
+{0x21, 0x05,},
+{0x22, 0x72,},
+{0x23, 0xba,},
+
+{0x03, 0xc1,},
+{0x10, 0x06,}, // ssd tranfer disable
+{0xff, 0x02,}, // 20ms
+
+{0x03, 0x00,},
+{0x01, 0x01,},	// Sleep on
+
+{0x03, 0xc1,},
+{0x10, 0x07,}, // ssd tranfer enable
+
+///////////////////////////////////////////////////////////////////////////////
+// C7 Page (AE)
+///////////////////////////////////////////////////////////////////////////////
+//Shutter Setting
+{0x03, 0xc7,},
+{0x10, 0x30,},	// AE Off (Band Off) 50hz 30, 60hz 10
+{0x12, 0x03,}, // Slow AE
+{0x15, 0xc0,}, // SSD Patch Weight Y Mean On
+
+{0x36, 0x18,}, // Max 24fps
+{0x37, 0x18,}, // Max 24fps
+
+{0x3d, 0x22,}, // YTh Lock, Unlock0
+
+{0x11, 0x01,}, // B[1]Initial Speed Up, B[0]AE Reset
+{0x70, 0x02,}, // 50hz 82, 60hz 02
+{0xff, 0x01,},
+{0x4C, 0x00,}, //SW ExpMin	 = 3700
+{0x4D, 0x00,},
+{0x4E, 0x0e,},
+{0x4F, 0x74,},
+
+{0x44, 0x00,}, //Start ExpTime 120fps
+{0x45, 0x05,},
+{0x46, 0x72,},
+{0x47, 0xba,},
+
+{0xa7, 0x48,}, //Start ExpTime 120fps flaot
+{0xa8, 0xae,},
+{0xa9, 0x57,},
+{0xaa, 0x40,},
+
+{0x03, 0x20,}, //HW ExpMin  = 3700
+{0x28, 0x00,},
+{0x29, 0x0e,},
+{0x2A, 0x74,},
+
+{0x03, 0xc7,},
+{0x10, 0x90,},	//AE On (Band Off) 50hz b0, 60hz 90
+
+{0x03, 0x00,},
+{0x1e, 0x01,}, // frame update
+
+{0x03, 0x00,},
+{0x01, 0x00,},	// Sleep Off
+
+{0xff, 0x01,}, //delay 10ms
+
+};
+#endif

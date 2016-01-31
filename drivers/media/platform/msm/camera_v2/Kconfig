@@ -99,6 +99,22 @@ config S5K4E5YA
 		2 mipi lanes, preview config = 1280 * 980 at 30 fps,
 		snapshot config = 2608 * 1960 at 30 fps.
 
+config S5K4H5YB
+	bool "Sensor S5K4H5YB (BAYER 8M)"
+	depends on MSMB_CAMERA
+	---help---
+		Samsung 8 MP Bayer Sensor with auto focus, uses
+		4 mipi lanes, preview config = 1984 * 1508 at 30 fps,
+		snapshot config = 4000 * 3000 at 20 fps,
+		hfr video at 60, 90 and 120 fps.
+
+config S5K6A3YX
+	bool "Sensor S5K6A3YX (BAYER 2M)"
+	depends on MSMB_CAMERA
+	---help---
+		Samsung 2 MP Bayer Sensor,
+		Front Sensor.
+		
 config IMX134
 	bool "Sensor IMX134 (BAYER 8M)"
 	depends on MSMB_CAMERA

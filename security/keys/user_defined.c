@@ -117,10 +117,7 @@ int user_update(struct key *key, const void *data, size_t datalen)
 
 	if (ret == 0) {
 		/* attach the new data, displacing the old */
-		if (!test_bit(KEY_FLAG_NEGATIVE, &key->flags))
-			zap = key->payload.data;
-		else
-			zap = NULL;
+		zap = key->payload.data;
 		rcu_assign_keypointer(key, upayload);
 		key->expiry = 0;
 	}
@@ -170,6 +167,12 @@ void user_destroy(struct key *key)
 {
 	struct user_key_payload *upayload = key->payload.data;
 
+#ifdef CONFIG_CRYPTO_FIPS
+	if(upayload)
+	{
+		memset(upayload->data, 0, upayload->datalen);
+	}
+#endif
 	kfree(upayload);
 }
 

@@ -141,7 +141,7 @@ struct es325_slim_ch {
 #define		ID(id)		(id)
 
 #define ES325_MAX_INVALID_VEQ 0xFFFF
-#define ES325_MAX_INVALID_BWE 0xFFFF
+#define ES325_MAX_INVALID_BWE 0x0000
 #define ES325_MAX_INVALID_TX_NS 0xFFFF
 
 static unsigned int es325_VEQ_enable = ES325_MAX_INVALID_VEQ;
@@ -152,6 +152,10 @@ static unsigned int es325_Tx_NS = ES325_MAX_INVALID_TX_NS;
 static unsigned int es325_Tx_NS_new = ES325_MAX_INVALID_TX_NS;
 #ifdef CONFIG_ARCH_MSM8226
 static struct regulator* es325_ldo;
+#endif
+
+#if defined(CONFIG_SND_SOC_ES325_ATLANTIC)
+extern void msm_slim_vote_func(struct slim_device *gen0_client);
 #endif
 
 enum es325_power_stage {
@@ -324,21 +328,6 @@ static u8 es325_internal_route_1mic_headset_WB[10] = {
 	0x90, 0x31, 0x00, 0x85, /* Algo Preset: 1-mic CT WB */
 	0xff		/* terminate */
 };
-
-/* 1-mic Speaker NB (1-mic FT)(NS off)(SW bypss) */
-static u8 es325_internal_route_1mic_speaker[10] = {
-	0x90, 0x31, 0x00, 0x0c, /* 1 Mic 1 FEOUT */
-	0x90, 0x31, 0x00, 0x82, /* Algo Preset: 1-mic CT NB */
-	0xff		/* terminate */
-};
-
-/* 1-mic Speaker WB (1-mic FT)(NS off)(SW bypss) */
-static u8 es325_internal_route_1mic_speaker_WB[10] = {
-	0x90, 0x31, 0x00, 0x0c, /* 1 Mic 1 FEOUT */
-	0x90, 0x31, 0x00, 0x83, /* Algo Preset: 1-mic CT WB */
-	0xff		/* terminate */
-};
-
 /* 2-mic Speaker NB (2-mic FT)(NS on) */
 static u8 es325_internal_route_2mic_speaker[10] = {
 	0x90, 0x31, 0x00, 0x02, /* 2 Mic 1 FEOUT CT */
@@ -442,33 +431,47 @@ static u8 es325_internal_route_conversation[10] = {
 	0xff		/* terminate */
 };
 
+/* 2-mic Speaker NB (2-mic FT)(NS OFF) */
+static u8 es325_internal_route_2mic_speaker_nsoff[10] = {
+	0x90, 0x31, 0x00, 0x02, /* 2 Mic 1 FEOUT CT */
+	0x90, 0x31, 0x00, 0x82, /* Algo Preset for 2 Mic FT NB */
+	0xff		/* terminate */
+};
+
+/* 2-mic Speaker WB (2-mic FT)(NS OFF) */
+static u8 es325_internal_route_2mic_speaker_WB_nsoff[10] = {
+	0x90, 0x31, 0x00, 0x02, /* 2 Mic 1 FEOUT CT */
+	0x90, 0x31, 0x00, 0x83, /* Algo Preset for 2 Mic FT NB */
+	0xff		/* terminate */
+};
+
 static u8* es325_internal_route_configs[ES325_INTERNAL_ROUTE_MAX] = {
-	es325_internal_route_1mic_headset,		/* [0]: 1-mic Headset NB (SW bypss) */
-	es325_internal_route_2mic_speaker,		/* [1]: 2-mic Speaker NB (2-mic FT)(NS on)*/
-	es325_internal_route_2mic_handset,		/* [2]: 2-mic Handset NB (2-mic CT)(NS on) */
-	es325_internal_route_1mic_speaker,		/* [3]: 1-mic Speaker NB (1-mic FT)(NS off)(SW bypss) */
-	es325_internal_route_1mic_handset,		/* [4]: 1-mic Handset NB (1-mic CT)(NS off) */
-	es325_internal_route_audio_playback_1ch,/* [5]: Audio playback, 1 channel */
-	es325_internal_route_audio_playback_2ch,/* [6]: Audio playback, 2 channels */
-	es325_internal_route_interview, /* [7]: TBD */
-	es325_internal_route_conversation, /* [8]: TBD */
-	dummy, /* [9]: TBD */
-	dummy, /* [10]: TBD */
-	es325_internal_route_TTY_VCO,			/* [11]: TTY VCO - Rx:Headset(2ch), Tx: Main mic(1ch)(SW bypass) */
-	es325_internal_route_TTY_HCO,			/* [12]: TTY HCO - Rx:Handset(1ch), Tx: Main mic(1ch)(SW bypass) */
-	es325_internal_route_2mic_ASR,			/* [13]: 2-mic ASR */
-	dummy, /* [14]: TBD */
-	dummy, /* [15]: TBD */
-	dummy, /* [16]: TBD */
-	es325_internal_route_rcv_loopback,/* [17]: 1-mic 1-output for Loopback (CT SW bypss) */
-	es325_internal_route_spk_loopback,/* [18]: 1-mic 1-output for Loopback (FT SW bypss) */
-	es325_internal_route_headset_loopback,/* [19]: 1-mic 2-output for Loopback (SW bypss) */
-	dummy, /* [20]: TBD */
-	es325_internal_route_1mic_headset_WB,	/* [21]: 1-mic Headset WB (SW bypss) */
-	es325_internal_route_2mic_speaker_WB,	/* [22]: 2-mic Speaker WB (2-mic FT)(NS on) */
-	es325_internal_route_2mic_handset_WB,	/* [23]: 2-mic Handset WB (2-mic CT)(NS on) */
-	es325_internal_route_1mic_speaker_WB,	/* [24]: 1-mic Speaker WB (1-mic FT)(NS off)(SW bypss) */
-	es325_internal_route_1mic_handset_WB,	/* [25]: 1-mic Handset WB (1-mic CT)(NS off) */
+	es325_internal_route_1mic_headset,			/* [0]: 1-mic Headset NB (SW bypss) */
+	es325_internal_route_2mic_speaker,			/* [1]: 2-mic Speaker NB (2-mic FT)(NS on)*/
+	es325_internal_route_2mic_handset,			/* [2]: 2-mic Handset NB (2-mic CT)(NS on) */
+	es325_internal_route_2mic_speaker_nsoff,	/* [3]: 2-mic Speaker NB (2-mic FT)(NS off) */
+	es325_internal_route_1mic_handset,			/* [4]: 1-mic Handset NB (1-mic CT)(NS off) */
+	es325_internal_route_audio_playback_1ch,	/* [5]: Audio playback, 1 channel */
+	es325_internal_route_audio_playback_2ch,	/* [6]: Audio playback, 2 channels */
+	es325_internal_route_interview,				/* [7]: TBD */
+	es325_internal_route_conversation,			/* [8]: TBD */
+	dummy,										/* [9]: TBD */
+	dummy,										/* [10]: TBD */
+	es325_internal_route_TTY_VCO,				/* [11]: TTY VCO - Rx:Headset(2ch), Tx: Main mic(1ch)(SW bypass) */
+	es325_internal_route_TTY_HCO,				/* [12]: TTY HCO - Rx:Handset(1ch), Tx: Main mic(1ch)(SW bypass) */
+	es325_internal_route_2mic_ASR,				/* [13]: 2-mic ASR */
+	dummy,										/* [14]: TBD */
+	dummy,										/* [15]: TBD */
+	dummy,										/* [16]: TBD */
+	es325_internal_route_rcv_loopback,			/* [17]: 1-mic 1-output for Loopback (CT SW bypss) */
+	es325_internal_route_spk_loopback,			/* [18]: 1-mic 1-output for Loopback (FT SW bypss) */
+	es325_internal_route_headset_loopback,		/* [19]: 1-mic 2-output for Loopback (SW bypss) */
+	dummy,										/* [20]: TBD */
+	es325_internal_route_1mic_headset_WB,		/* [21]: 1-mic Headset WB (SW bypss) */
+	es325_internal_route_2mic_speaker_WB,		/* [22]: 2-mic Speaker WB (2-mic FT)(NS on) */
+	es325_internal_route_2mic_handset_WB,		/* [23]: 2-mic Handset WB (2-mic CT)(NS on) */
+	es325_internal_route_2mic_speaker_WB_nsoff,	/* [24]: 2-mic Speaker WB (2-mic FT)(NS off) */
+	es325_internal_route_1mic_handset_WB,		/* [25]: 1-mic Handset WB (1-mic CT)(NS off) */
 };
 
 #ifdef NOT_USED_CONFIG
@@ -1312,7 +1315,7 @@ static int es325_build_algo_read_msg(char *msg, int *msg_len, unsigned int reg)
 	unsigned int index = reg & ES325_ADDR_MASK;
 	unsigned int paramid;
 
-	if (index > ARRAY_SIZE(es325_algo_paramid))
+	if (index >= ARRAY_SIZE(es325_algo_paramid))
 		return -EINVAL;
 
 	paramid = es325_algo_paramid[index];
@@ -1336,7 +1339,7 @@ static int es325_build_algo_write_msg(char *msg, int *msg_len,
 	unsigned int cmd;
 	unsigned int paramid;
 
-	if (index > ARRAY_SIZE(es325_algo_paramid))
+	if (index >= ARRAY_SIZE(es325_algo_paramid))
 		return -EINVAL;
 
 	paramid = es325_algo_paramid[index];
@@ -1372,7 +1375,7 @@ static int es325_build_dev_read_msg(char *msg, int *msg_len, unsigned int reg)
 	unsigned int index = reg & ES325_ADDR_MASK;
 	unsigned int paramid;
 
-	if (index > ARRAY_SIZE(es325_dev_paramid))
+	if (index >= ARRAY_SIZE(es325_dev_paramid))
 		return -EINVAL;
 
 	paramid = es325_dev_paramid[index];
@@ -1396,7 +1399,7 @@ static int es325_build_dev_write_msg(char *msg, int *msg_len,
 	unsigned int cmd;
 	unsigned int paramid;
 
-	if (index > ARRAY_SIZE(es325_dev_paramid))
+	if (index >= ARRAY_SIZE(es325_dev_paramid))
 		return -EINVAL;
 
 	paramid = es325_dev_paramid[index];
@@ -1432,7 +1435,7 @@ static int es325_build_cmd_read_msg(char *msg, int *msg_len, unsigned int reg)
 	unsigned int index = reg & ES325_ADDR_MASK;
 	struct es325_cmd_access *cmd_access;
 
-	if (index > ARRAY_SIZE(es325_cmd_access))
+	if (index >= ARRAY_SIZE(es325_cmd_access))
 		return -EINVAL;
 	cmd_access = es325_cmd_access + index;
 
@@ -1448,7 +1451,7 @@ static int es325_build_cmd_write_msg(char *msg, int *msg_len,
 	unsigned int index = reg & ES325_ADDR_MASK;
 	struct es325_cmd_access *cmd_access;
 
-	if (index > ARRAY_SIZE(es325_cmd_access))
+	if (index >= ARRAY_SIZE(es325_cmd_access))
 		return -EINVAL;
 	cmd_access = es325_cmd_access + index;
 
@@ -1794,7 +1797,7 @@ static ssize_t es325_fw_version_show(struct device *dev, struct device_attribute
 	if(es325_fw_downloaded) {
 		memset(verbuf,0,SIZE_OF_VERBUF);
 		memcpy(cmd, first_char_msg, 4);
-		ES325_BUS_WRITE(es325, ES325_WRITE_VE_OFFSET, ES325_WRITE_VE_WIDTH, cmd, 4, 1);
+		rc = ES325_BUS_WRITE(es325, ES325_WRITE_VE_OFFSET, ES325_WRITE_VE_WIDTH, cmd, 4, 1);
 		while ((rc >= 0) && (idx < (SIZE_OF_VERBUF-1)) && (imsg & 0xFF)) {
 			memcpy(cmd, next_char_msg, 4);
 			rc = es325_request_response(es325, cmd, 4, 1, bmsg, 4, 1, 0, 0);
@@ -2047,6 +2050,12 @@ static int fw_download(void *arg)
 
 	pr_info("%s():es325 gen0 LA=%d\n", __func__, priv->gen0_client->laddr);
 #ifdef BUS_TRANSACTIONS
+
+#if defined(CONFIG_SND_SOC_ES325_ATLANTIC)
+	msm_slim_vote_func(priv->gen0_client);
+#endif
+
+	usleep_range(10000, 11000);
 	rc = es325_bootup(priv);
 #endif
 	pr_info("%s():bootup rc=%d\n", __func__, rc);
@@ -2255,10 +2264,10 @@ static int es325_sleep(struct es325_priv *es325)
 	int rc;
 	struct slim_device *sbdev = es325->gen0_client;
 
-	if (es325->power_stage == ES325_POWER_SLEEP) {
+	/*if (es325->power_stage == ES325_POWER_SLEEP) {
 		dev_err(&sbdev->dev, "%s():Sleep called while sleeping/trying to sleep. power_state=%d\n", __func__, es325->power_stage);
 		return rc =0;
-		}
+		}*/
 
 
 	dev_info(&sbdev->dev, "%s()\n", __func__);
@@ -2803,12 +2812,15 @@ int es325_set_VEQ_max_gain(int volume)
 #elif defined(CONFIG_MACH_HLTETMO)
 	static char VEQ_max_gain[6] = {3, 5, 7, 9, 7, 4}; /* index 0 means max volume */
 	static char VEQ_adj_gain[6] = {25, 2, 2, 2, 2, 2};
-#elif defined(CONFIG_MACH_HLTEATT) || defined(CONFIG_MACH_HLTEEUR) || defined(CONFIG_MACH_H3GDUOS) || defined(CONFIG_MACH_ATLANTICLTE_ATT)
+#elif defined(CONFIG_MACH_HLTEATT) || defined(CONFIG_MACH_HLTEEUR) || defined(CONFIG_MACH_H3GDUOS)
 	static char VEQ_max_gain[6] = {3, 5, 7, 9, 7, 4}; /* index 0 means max volume */
 	static char VEQ_adj_gain[6] = {25, 2, 2, 2, 2, 2};
 #elif defined(CONFIG_MACH_HLTESPR)
 	static char VEQ_max_gain[6] = {5, 5, 7, 9, 7, 4}; /* index 0 means max volume */
 	static char VEQ_adj_gain[6] = {30, 2, 2, 2, 2, 2};
+#elif defined(CONFIG_MACH_ATLANTICLTE_ATT) || defined(CONFIG_MACH_ATLANTICLTE_USC)
+	static char VEQ_max_gain[6] = {4, 4, 4, 4, 4, 4}; /* index 0 means max volume */
+	static char VEQ_adj_gain[6] = {0x1E, 0x14, 0x14, 0x14, 0x14, 0x14};
 #else
 	static char VEQ_max_gain[6] = {3, 5, 7, 9, 7, 4}; /* index 0 means max volume */
 	static char VEQ_adj_gain[6] = {0, 0, 0, 0, 0, 0};
@@ -3665,7 +3677,7 @@ err:
 #ifdef CONFIG_ARCH_MSM8226
 static int es325_regulator_init(struct device *dev)
 {
-	int ret;
+	int ret =0;
 	struct device_node *reg_node = NULL;
 
 	reg_node = of_parse_phandle(dev->of_node, "vdd-2mic-core-supply", 0);

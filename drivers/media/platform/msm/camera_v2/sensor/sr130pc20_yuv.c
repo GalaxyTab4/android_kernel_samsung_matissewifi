@@ -16,12 +16,23 @@
 #endif
 
 #include "sr130pc20.h"
-#if defined (CONFIG_MACH_MILLETWIFIUS_OPEN) || defined (CONFIG_MACH_MILLETLTE_VZW) || defined (CONFIG_MACH_MILLETLTE_ATT)
+#if defined (CONFIG_MACH_MILLETWIFIUS_OPEN) || \
+    defined (CONFIG_MACH_MILLETLTE_VZW) || \
+    defined (CONFIG_MACH_MILLETLTE_ATT) || \
+    defined (CONFIG_MACH_MILLETLTE_CAN) || \
+    defined (CONFIG_MACH_DEGASLTE_SPR) || \
+    defined (CONFIG_MACH_MILLETLTE_TMO) || \
+    defined (CONFIG_MACH_DEGASWIFIDTV_LTN)
 #include "sr130pc20_yuv_millet_usa.h"
-#elif defined (CONFIG_MACH_MATISSEWIFIUS_OPEN) || defined (CONFIG_MACH_MATISSELTE_VZW) || defined (CONFIG_MACH_MATISSELTE_ATT) || defined (CONFIG_MACH_MATISSELTE_USC)
+#elif defined (CONFIG_MACH_MATISSEWIFIUS_OPEN) || \
+    defined (CONFIG_MACH_MATISSELTE_VZW) || \
+    defined (CONFIG_MACH_MATISSELTE_ATT) || \
+    defined (CONFIG_MACH_MATISSELTE_USC)
 #include "sr130pc20_yuv_matisse_wifi_usa.h"
 #elif defined (CONFIG_SEC_MATISSE_PROJECT)
 #include "sr130pc20_yuv_matisse.h"
+#elif defined (CONFIG_SEC_RUBENS_PROJECT)
+#include "sr130pc20_yuv_ruben.h"
 #else
 #include "sr130pc20_yuv.h"
 #endif
@@ -61,26 +72,59 @@ void sr130pc20_regs_table_init(char *filename);
 void sr130pc20_regs_table_exit(void);
 #endif
 
-int32_t sr130pc20_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
-    struct msm_camera_slave_info *slave_info, const char *sensor_name)
+// maximum number of chipid and slaveid pairs
+// please change accordingly when you add more pairs
+#define MAX_NUM_PAIRS 1
+
+// Set of chipid and slaveid pairs not including the latest.
+// Order: Latest but one to the oldest
+// The latest values will be in the sensor lib file
+// index 0 - chipid
+// index 1 - slaveid
+static uint16_t ids[MAX_NUM_PAIRS][2] = {{0xC1,0x40},};
+
+int sr130pc20_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
+	struct msm_camera_slave_info *slave_info,
+	const char *sensor_name)
 {
-    int32_t rc = 0;
     uint16_t chipid = 0;
+    int32_t i;
+
     if (!sensor_i2c_client || !slave_info || !sensor_name) {
         pr_err("%s:%d failed: %p %p %p\n",__func__, __LINE__,
             sensor_i2c_client, slave_info,sensor_name);
         return -EINVAL;
     }
-    CDBG("%s sensor_name =%s sid = 0x%X sensorid = 0x%X DATA TYPE = %d\n",
+
+    sensor_i2c_client->i2c_func_tbl->i2c_read(sensor_i2c_client,
+        slave_info->sensor_id_reg_addr,
+        &chipid,
+        sensor_i2c_client->data_type);
+
+    if(chipid!=slave_info->sensor_id){
+        pr_err("%s: chipid read=%x did not match with chipid=%x",
+		__func__, chipid, slave_info->sensor_id);
+
+        for( i=0; i<MAX_NUM_PAIRS; ++i){
+            chipid = 0;
+            sensor_i2c_client->cci_client->sid = ids[i][1] >> 1;
+            sensor_i2c_client->i2c_func_tbl->i2c_read(sensor_i2c_client,
+                slave_info->sensor_id_reg_addr,
+                &chipid,
+                sensor_i2c_client->data_type);
+            if(chipid == ids[i][0]){
+                break;
+            }
+            pr_err("%s: chipid read=%x did not match with chipid=%x",
+			__func__, chipid, ids[i][0]);
+        }
+    }
+
+    CDBG("%s sensor_name =%s slaveid = 0x%X sensorid = 0x%X DATA TYPE = %d\n",
         __func__, sensor_name, sensor_i2c_client->cci_client->sid,
         slave_info->sensor_id, sensor_i2c_client->data_type);
-    rc = sensor_i2c_client->i2c_func_tbl->i2c_read(sensor_i2c_client,
-        slave_info->sensor_id_reg_addr, &chipid, sensor_i2c_client->data_type);
-    if (chipid != slave_info->sensor_id) {
-        pr_err("%s: chip id %x does not match read id: %x\n",
-            __func__, chipid, slave_info->sensor_id);
-    }
-    return rc;
+
+    return 0;
 }
 
 int32_t sr130pc20_set_exposure_compensation(struct msm_sensor_ctrl_t *s_ctrl, int mode)
@@ -316,39 +360,44 @@ int32_t sr130pc20_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 		}
 		break;
 	case CFG_SET_START_STREAM:
-	     CDBG(" CFG_SET_START_STREAM writing start stream registers: sr130pc20_start_stream start");
-            switch(sr130pc20_ctrl.op_mode) {
-                case CAMERA_MODE_PREVIEW:
-                {
-                CDBG(" CFG_SET_START_STREAM: Preview");
-                if(sr130pc20_ctrl.prev_mode == CAMERA_MODE_RECORDING) {
-                    SR130PC20_WRITE_LIST(sr130pc20_Init_Reg);
-                    SR130PC20_WRITE_LIST(sr130pc20_stop_stream);
-                    }
-                if(sr130pc20_ctrl.prev_mode != CAMERA_MODE_CAPTURE) {
-                    sr130pc20_set_effect( s_ctrl , sr130pc20_ctrl.settings.effect);
-                    sr130pc20_set_white_balance( s_ctrl, sr130pc20_ctrl.settings.wb);
-                    sr130pc20_set_exposure_compensation( s_ctrl , sr130pc20_ctrl.settings.exposure );
-                    }
-                sr130pc20_set_resolution(s_ctrl , resolution );
-                }
-                break;
-                case CAMERA_MODE_CAPTURE:
-                {
-                    sr130pc20_set_resolution(s_ctrl , resolution );
-                    sr130pc20_set_exif(s_ctrl);
-                }
-                break;
-                case CAMERA_MODE_RECORDING:
-                {
-                    SR130PC20_WRITE_LIST(sr130pc20_camcorder_mode);
-                    sr130pc20_set_effect( s_ctrl , sr130pc20_ctrl.settings.effect);
-                    sr130pc20_set_white_balance( s_ctrl, sr130pc20_ctrl.settings.wb);
-                    sr130pc20_set_exposure_compensation( s_ctrl , sr130pc20_ctrl.settings.exposure );
-                }
-                break;
-            }
-            sr130pc20_ctrl.streamon = 1;
+		CDBG(" CFG_SET_START_STREAM writing start stream registers: sr130pc20_start_stream start");
+		switch(sr130pc20_ctrl.op_mode) {
+		case CAMERA_MODE_PREVIEW:
+		{
+			CDBG(" CFG_SET_START_STREAM: Preview");
+			if(sr130pc20_ctrl.prev_mode == CAMERA_MODE_RECORDING) {
+				SR130PC20_WRITE_LIST(sr130pc20_Init_Reg);
+				SR130PC20_WRITE_LIST(sr130pc20_stop_stream);
+			}
+			if(sr130pc20_ctrl.prev_mode != CAMERA_MODE_CAPTURE) {
+				sr130pc20_set_effect( s_ctrl , sr130pc20_ctrl.settings.effect);
+				sr130pc20_set_white_balance( s_ctrl, sr130pc20_ctrl.settings.wb);
+				sr130pc20_set_exposure_compensation( s_ctrl , sr130pc20_ctrl.settings.exposure );
+			}
+			sr130pc20_set_resolution(s_ctrl , resolution );
+#if defined(CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT) || defined (CONFIG_MACH_VICTOR3GDSDTV_LTN)
+			if(sr130pc20_ctrl.prev_mode == CAMERA_MODE_INIT) {
+				msleep(200);
+			}
+#endif
+		}
+		break;
+		case CAMERA_MODE_CAPTURE:
+		{
+			sr130pc20_set_resolution(s_ctrl , resolution );
+			sr130pc20_set_exif(s_ctrl);
+		}
+		break;
+		case CAMERA_MODE_RECORDING:
+		{
+			SR130PC20_WRITE_LIST(sr130pc20_camcorder_mode);
+			sr130pc20_set_effect( s_ctrl , sr130pc20_ctrl.settings.effect);
+			sr130pc20_set_white_balance( s_ctrl, sr130pc20_ctrl.settings.wb);
+			sr130pc20_set_exposure_compensation( s_ctrl , sr130pc20_ctrl.settings.exposure );
+		}
+		break;
+	}
+		sr130pc20_ctrl.streamon = 1;
 		CDBG("CFG_SET_START_STREAM : sr130pc20_start_stream rc = %d", rc);
 		break;
 	case CFG_SET_SLAVE_INFO: {
@@ -672,9 +721,9 @@ int sr130pc20_regs_from_sd_tunning(struct msm_camera_i2c_reg_conf *settings, str
 	if (reg)
 		start = (reg + 14);
 	if (addr == 0xff){
-		usleep_range(value * 10, (value* 10) + 10);
+		msleep(value * 10);
 		pr_err("delay = %d\n", (int)value*10);
-		}
+	}
 	else{
 		rc=s_ctrl->sensor_i2c_client->i2c_func_tbl->
 				i2c_write(s_ctrl->sensor_i2c_client, addr,

@@ -354,9 +354,8 @@ int msm_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 
 	pr_info("func %s line %d chipid = 0x%X\n",
 		__func__, __LINE__, chipid);
-
+#if !defined(CONFIG_MACH_VASTALTE_CHN_CMCC_DUOS)
 	if (chipid != slave_info->sensor_id) {
-	 
 	    sensor_i2c_client->cci_client->sid = 0x6E >> 1;
 	    slave_info->sensor_id = 0x5B02;
 		chipid = 0;
@@ -405,8 +404,8 @@ int msm_sensor_match_id(struct msm_camera_i2c_client *sensor_i2c_client,
 		slave_info->sensor_id);
 			}
 		}
-		
 	}
+#endif
     pr_info("rc == %d \n", rc);
 	pr_info("%s: read id: %x expected id %x:\n", __func__, chipid,
 		slave_info->sensor_id);

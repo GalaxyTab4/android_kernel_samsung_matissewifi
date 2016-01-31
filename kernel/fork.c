@@ -467,24 +467,7 @@ static inline int mm_alloc_pgd(struct mm_struct *mm)
 
 static inline void mm_free_pgd(struct mm_struct *mm)
 {
-#ifdef CONFIG_TIMA_RKP_DEBUG
-	int i;
-#endif
 	pgd_free(mm, mm->pgd);
-#ifdef CONFIG_TIMA_RKP_DEBUG
-        /* with debug infrastructure, check if a page was
-	 * unprotected after being freed. Scream if not.
-	 */ 
-	#ifdef CONFIG_TIMA_RKP_L1_TABLES
-	for(i=0; i<4; i++) {
-		if (tima_debug_page_protection(((unsigned long)mm->pgd + i*0x1000), 5, 0) == 1) {
-			tima_debug_signal_failure(0x3f80f221, 5);
-			//tima_send_cmd((unsigned long)mm->pgd, 0x3f80e221);
-			//printk(KERN_ERR"TIMA: New L1 PGT still protected! mm_free_pgd\n");
-		}
-	}
-	#endif
-#endif 
 }
 #else
 #define dup_mmap(mm, oldmm)	(0)
@@ -1236,7 +1219,6 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 
 	p->utime = p->stime = p->gtime = 0;
 	p->utimescaled = p->stimescaled = 0;
-	p->cpu_power = 0;
 #ifndef CONFIG_VIRT_CPU_ACCOUNTING
 	p->prev_utime = p->prev_stime = 0;
 #endif

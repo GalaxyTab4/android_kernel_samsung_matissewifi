@@ -22,6 +22,9 @@
 #if defined(CONFIG_SR352)
 #include "sr352.h"
 #endif
+#if defined (CONFIG_SR200PC20)
+#include "sr200pc20.h"
+#endif
 #if defined(CONFIG_SR130PC20)
 #include "sr130pc20.h"
 #endif
@@ -51,6 +54,15 @@ static struct msm_sensor_fn_t sr352_sensor_func_tbl = {
 };
 #endif
 
+#if defined (CONFIG_SR200PC20)
+static struct msm_sensor_fn_t sr200pc20_sensor_func_tbl = {
+	.sensor_config = sr200pc20_sensor_config,
+	.sensor_power_up = msm_sensor_power_up,
+	.sensor_power_down = msm_sensor_power_down,
+	.sensor_match_id = msm_sensor_match_id,
+	.sensor_native_control = sr200pc20_sensor_native_control,
+};
+#endif
 #if defined(CONFIG_SR130PC20)
 static struct msm_sensor_fn_t sr130pc20_sensor_func_tbl = {
 	.sensor_config = sr130pc20_sensor_config,
@@ -192,19 +204,28 @@ int32_t msm_sensor_driver_probe(void *setting)
         goto FREE_SLAVE_INFO;
     }
 
-#if defined (CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT)
+#if defined (CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT) \
+	|| defined(CONFIG_SEC_DEGAS_PROJECT) || defined (CONFIG_SEC_T8_PROJECT) \
+	|| defined (CONFIG_SEC_T10_PROJECT) \
+	|| defined (CONFIG_MACH_VICTOR3GDSDTV_LTN) \
+	|| defined (CONFIG_SEC_RUBENS_PROJECT)
     if(slave_info->camera_id == CAMERA_2){
 #if defined(CONFIG_SR130PC20)
-	s_ctrl->func_tbl = &sr130pc20_sensor_func_tbl ;
-	sr130pc20_set_default_settings();
+		s_ctrl->func_tbl = &sr130pc20_sensor_func_tbl ;
+		sr130pc20_set_default_settings();
 #endif
     }else if (slave_info->camera_id == CAMERA_0){
 #if defined(CONFIG_SR352)
-    	s_ctrl->func_tbl = &sr352_sensor_func_tbl ;
-        sr352_set_default_settings();
+		s_ctrl->func_tbl = &sr352_sensor_func_tbl ;
+		sr352_set_default_settings();
+#endif
+#if defined(CONFIG_SR200PC20)
+		s_ctrl->func_tbl = &sr200pc20_sensor_func_tbl ;
+		sr200pc20_set_default_settings();
 #endif
     }
-#elif defined(CONFIG_MACH_AFYONLTE_TMO)
+#elif defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN) \
+	|| defined (CONFIG_MACH_AFYONLTE_MTR)
     if(slave_info->camera_id == CAMERA_2){
 #if defined(CONFIG_S5K4ECGX)
 		s_ctrl->func_tbl = &sr030pc50_sensor_func_tbl;
@@ -358,7 +379,12 @@ int32_t msm_sensor_driver_probe(void *setting)
             goto FREE_POWER_SETTING;
     }
 #if !defined (CONFIG_SEC_MILLET_PROJECT) && !defined (CONFIG_SEC_MATISSE_PROJECT) \
-	&& !defined(CONFIG_MACH_AFYONLTE_TMO) && !defined (CONFIG_MACH_VICTORLTE_CTC)//Commenting for Millet, Matisse
+	&& !defined(CONFIG_MACH_AFYONLTE_TMO) && !defined(CONFIG_MACH_AFYONLTE_CAN) && !defined (CONFIG_MACH_VICTORLTE_CTC) \
+	&& !defined(CONFIG_SEC_DEGAS_PROJECT) && !defined (CONFIG_SEC_T8_PROJECT) \
+	&& !defined (CONFIG_SEC_T10_PROJECT) && !defined (CONFIG_MACH_VICTOR3GDSDTV_LTN) \
+	&& !defined (CONFIG_MACH_AFYONLTE_MTR)	\
+	&& !defined (CONFIG_SEC_RUBENS_PROJECT) //Commenting for Millet, Matisse
+
     if (power_info->power_off_setting && (power_info->power_off_setting_size > 0)) {
         /* Parse and fill vreg params */
         rc = msm_camera_fill_vreg_params(
@@ -377,8 +403,13 @@ int32_t msm_sensor_driver_probe(void *setting)
     }
 #endif
     /* remove this code for DFMS test for MS01 */
-#if defined(CONFIG_MACH_ULC83G_EUR) || defined (CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT)|| defined(CONFIG_MACH_CRATERQ_CHN_OPEN) \
-	|| defined(CONFIG_MACH_AFYONLTE_TMO) || defined (CONFIG_MACH_VICTORLTE_CTC) // Added for YUV bringup
+#if defined(CONFIG_MACH_ULC83G_EUR) || defined (CONFIG_SEC_MILLET_PROJECT) \
+	|| defined(CONFIG_SEC_MATISSE_PROJECT)|| defined(CONFIG_MACH_CRATERQ_CHN_OPEN) \
+	|| defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN) \
+	|| defined (CONFIG_MACH_VICTORLTE_CTC) || defined(CONFIG_SEC_DEGAS_PROJECT) \
+	|| defined (CONFIG_SEC_T8_PROJECT) || defined (CONFIG_SEC_T10_PROJECT) \
+	|| defined (CONFIG_MACH_AFYONLTE_MTR) \
+	|| defined (CONFIG_SEC_RUBENS_PROJECT) // Added for YUV bringup
     /* Power up and probe sensor */
     rc = s_ctrl->func_tbl->sensor_power_up(s_ctrl,
                                            &s_ctrl->sensordata->power_info,
@@ -393,6 +424,43 @@ int32_t msm_sensor_driver_probe(void *setting)
             goto FREE_POWER_SETTING;
     }
 	
+#endif
+
+#if defined (CONFIG_MACH_VICTOR3GDSDTV_LTN)
+    if(slave_info->camera_id == CAMERA_2){
+	    /* Power up and probe sensor */
+	    rc = s_ctrl->func_tbl->sensor_power_up(s_ctrl,
+	                                           &s_ctrl->sensordata->power_info,
+	                                           s_ctrl->sensor_i2c_client,
+	                                           s_ctrl->sensordata->slave_info,
+	                                           slave_info->sensor_name);
+	    if (rc < 0) {
+	        pr_err("%s power up failed", slave_info->sensor_name);
+	        if (is_power_off)
+	            goto FREE_POWER_OFF_SETTING;
+	        else
+	            goto FREE_POWER_SETTING;
+	    }    	
+    } else {
+	    if (power_info->power_off_setting && (power_info->power_off_setting_size > 0)) {
+	        /* Parse and fill vreg params */
+	        rc = msm_camera_fill_vreg_params(
+	                                         power_info->cam_vreg,
+	                                         power_info->num_vreg,
+	                                         power_info->power_off_setting,
+	                                         power_info->power_off_setting_size);
+	        if (rc < 0) {
+	            pr_err("failed: msm_camera_get_dt_power_setting_data rc %d",
+	                   rc);
+	            if (is_power_off)
+	                goto FREE_POWER_OFF_SETTING;
+	            else
+	                goto FREE_POWER_SETTING;
+	        }
+	    }
+    }
+
+
 #endif
 
     /* Update sensor name in sensor control structure */
@@ -468,14 +536,28 @@ int32_t msm_sensor_driver_probe(void *setting)
     pr_warn("%s probe succeeded", slave_info->sensor_name);
 
     /* remove this code for DFMS test for MS01*/
-#if defined(CONFIG_MACH_ULC83G_EUR) || defined (CONFIG_SEC_MILLET_PROJECT) || defined(CONFIG_SEC_MATISSE_PROJECT) || defined(CONFIG_MACH_CRATERQ_CHN_OPEN) \
-	|| defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_VICTORLTE_CTC)// Added for YUV bringup ToDo.
+#if defined(CONFIG_MACH_ULC83G_EUR) || defined (CONFIG_SEC_MILLET_PROJECT) \
+	|| defined(CONFIG_SEC_MATISSE_PROJECT) || defined(CONFIG_MACH_CRATERQ_CHN_OPEN) \
+	|| defined(CONFIG_MACH_AFYONLTE_TMO) || defined(CONFIG_MACH_AFYONLTE_CAN) \
+	|| defined(CONFIG_MACH_VICTORLTE_CTC) || defined(CONFIG_SEC_DEGAS_PROJECT) \
+	|| defined (CONFIG_SEC_T8_PROJECT) || defined (CONFIG_SEC_T10_PROJECT) \
+	|| defined (CONFIG_MACH_AFYONLTE_MTR) \
+	|| defined (CONFIG_SEC_RUBENS_PROJECT) // Added for YUV bringup ToDo
     /* Power down */
     s_ctrl->func_tbl->sensor_power_down(
                                         s_ctrl,
                                         &s_ctrl->sensordata->power_info,
                                         s_ctrl->sensor_device_type,
                                         s_ctrl->sensor_i2c_client);
+#elif defined (CONFIG_MACH_VICTOR3GDSDTV_LTN)
+    if(slave_info->camera_id == CAMERA_2){
+	    /* Power down */
+	    s_ctrl->func_tbl->sensor_power_down(
+	                                        s_ctrl,
+	                                        &s_ctrl->sensordata->power_info,
+	                                        s_ctrl->sensor_device_type,
+	                                        s_ctrl->sensor_i2c_client);
+    }
 #endif
 
     return rc;

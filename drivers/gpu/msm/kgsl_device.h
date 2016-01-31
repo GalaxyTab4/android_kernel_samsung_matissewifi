@@ -28,7 +28,6 @@
 #define KGSL_TIMEOUT_NONE           0
 #define KGSL_TIMEOUT_DEFAULT        0xFFFFFFFF
 #define KGSL_TIMEOUT_PART           50 /* 50 msec */
-#define KGSL_TIMEOUT_LONG_IB_DETECTION  2000 /* 2 sec*/
 
 #define FIRST_TIMEOUT (HZ / 2)
 
@@ -127,6 +126,8 @@ struct kgsl_functable {
 						uint32_t *flags);
 	int (*drawctxt_detach) (struct kgsl_context *context);
 	void (*drawctxt_destroy) (struct kgsl_context *context);
+	void (*drawctxt_dump) (struct kgsl_device *device,
+		struct kgsl_context *context);
 	long (*ioctl) (struct kgsl_device_private *dev_priv,
 		unsigned int cmd, void *data);
 	int (*setproperty) (struct kgsl_device_private *dev_priv,
@@ -203,12 +204,15 @@ struct kgsl_cmdbatch {
  * @CMDBATCH_FLAG_SKIP - skip the entire command batch
  * @CMDBATCH_FLAG_FORCE_PREAMBLE - Force the preamble on for the cmdbatch
  * @CMDBATCH_FLAG_WFI - Force wait-for-idle for the submission
+ * @CMDBATCH_FLAG_FENCE_LOG - Set if the cmdbatch is dumping fence logs via the
+ * cmdbatch timer - this is used to avoid recursion
  */
 
 enum kgsl_cmdbatch_priv {
 	CMDBATCH_FLAG_SKIP = 0,
 	CMDBATCH_FLAG_FORCE_PREAMBLE,
 	CMDBATCH_FLAG_WFI,
+	CMDBATCH_FLAG_FENCE_LOG,
 };
 
 struct kgsl_device {
@@ -251,6 +255,7 @@ struct kgsl_device {
 	int open_count;
 
 	struct mutex mutex;
+	atomic64_t mutex_owner;
 	uint32_t state;
 	uint32_t requested_state;
 
@@ -349,6 +354,8 @@ struct kgsl_process_private;
  * is set.
  * @flags: flags from userspace controlling the behavior of this context
  * @pwr_constraint: power constraint from userspace for this context
+ * @fault_count: number of times gpu hanged in last _context_throttle_time ms
+ * @fault_time: time of the first gpu hang in last _context_throttle_time ms
  */
 struct kgsl_context {
 	struct kref refcount;
@@ -367,6 +374,8 @@ struct kgsl_context {
 	unsigned int pagefault_ts;
 	unsigned int flags;
 	struct kgsl_pwr_constraint pwr_constraint;
+	unsigned int fault_count;
+	unsigned long fault_time;
 };
 
 /**
@@ -543,6 +552,8 @@ int kgsl_context_init(struct kgsl_device_private *, struct kgsl_context
 		*context);
 int kgsl_context_detach(struct kgsl_context *context);
 
+void kgsl_context_dump(struct kgsl_context *context);
+
 int kgsl_memfree_find_entry(pid_t pid, unsigned long *gpuaddr,
 	unsigned long *size, unsigned int *flags);
 
@@ -689,10 +700,33 @@ static inline void kgsl_cancel_events_timestamp(struct kgsl_device *device,
 {
 	kgsl_signal_event(device, context, timestamp, KGSL_EVENT_CANCELLED);
 }
+void kgsl_dump_syncpoints(struct kgsl_device *device,
+	struct kgsl_cmdbatch *cmdbatch);
 
 void kgsl_cmdbatch_destroy(struct kgsl_cmdbatch *cmdbatch);
 
 void kgsl_cmdbatch_destroy_object(struct kref *kref);
+
+/**
+* kgsl_process_private_get() - increment the refcount on a kgsl_process_private
+*   struct
+* @process: Pointer to the KGSL process_private
+*
+* Returns 0 if the structure is invalid and a reference count could not be
+* obtained, nonzero otherwise.
+*/
+static inline int kgsl_process_private_get(struct kgsl_process_private *process)
+{
+	int ret = 0;
+	if (process != NULL)
+		ret = kref_get_unless_zero(&process->refcount);
+	return ret;
+}
+
+void kgsl_process_private_put(struct kgsl_process_private *private);
+
+
+struct kgsl_process_private *kgsl_process_private_find(pid_t pid);
 
 /**
  * kgsl_cmdbatch_put() - Decrement the refcount for a command batch object
@@ -704,4 +738,54 @@ static inline void kgsl_cmdbatch_put(struct kgsl_cmdbatch *cmdbatch)
 		kref_put(&cmdbatch->refcount, kgsl_cmdbatch_destroy_object);
 }
 
+/**
+ * kgsl_sysfs_store() - parse a string from a sysfs store function
+ * @buf: Incoming string to parse
+ * @ptr: Pointer to an unsigned int to store the value
+ */
+static inline int kgsl_sysfs_store(const char *buf, unsigned int *ptr)
+{
+	unsigned int val;
+	int rc;
+
+	rc = kstrtou32(buf, 0, &val);
+	if (rc)
+		return rc;
+
+	if (ptr)
+		*ptr = val;
+
+	return 0;
+}
+
+/**
+ * kgsl_mutex_lock() -- try to acquire the mutex if current thread does not
+ *                      already own it
+ * @mutex: mutex to lock
+ * @owner: current mutex owner
+ */
+
+static inline int kgsl_mutex_lock(struct mutex *mutex, atomic64_t *owner)
+{
+
+	if (atomic64_read(owner) != (long)current) {
+		mutex_lock(mutex);
+		atomic64_set(owner, (long)current);
+		/* Barrier to make sure owner is updated */
+		smp_wmb();
+		return 0;
+	}
+	return 1;
+}
+
+/**
+ * kgsl_mutex_unlock() -- Clear the owner and unlock the mutex
+ * @mutex: mutex to unlock
+ * @owner: current mutex owner
+ */
+static inline void kgsl_mutex_unlock(struct mutex *mutex, atomic64_t *owner)
+{
+	atomic64_set(owner, 0);
+	mutex_unlock(mutex);
+}
 #endif  /* __KGSL_DEVICE_H */

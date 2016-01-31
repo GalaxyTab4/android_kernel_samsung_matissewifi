@@ -4989,7 +4989,7 @@ static struct msm_camera_i2c_reg_conf sr352_Init_Reg[] = {
 {0x28, 0x40,},
 {0x29, 0x37,},//Outdoor 1240 add 720p
 {0x2a, 0x70,},
-{0x2b, 0x9f,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x2b, 0xbf,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x2c, 0x71,},
 {0x2d, 0x1a,},//Outdoor 1271 //Bayer HPF Gain
 {0x2e, 0x72,},
@@ -13290,7 +13290,7 @@ static struct msm_camera_i2c_reg_conf sr352_Init_Reg_01[] = {
 {0x28, 0x40,},
 {0x29, 0x37,},//Outdoor 1240 add 720p
 {0x2a, 0x70,},
-{0x2b, 0x9f,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x2b, 0xbf,},//Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x2c, 0x71,},
 {0x2d, 0x1a,},//Outdoor 1271 //Bayer HPF Gain
 {0x2e, 0x72,},
@@ -16668,8 +16668,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x768[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16770,8 +16771,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x768_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16872,8 +16874,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x576[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -16986,8 +16989,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_1024x576_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17099,8 +17103,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_640x480[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17211,8 +17216,9 @@ static struct msm_camera_i2c_reg_conf sr352_Enterpreview_640x480_01[] = {
 //PWR margin setting
 //--------------------------------------//
 {0x03, 0x11,},
-{0x10, 0x0F,},	//Bit[4]=Low
-{0x70, 0x9E,},	//Bit[0]=Low
+{0x10, 0x1F,},	//Bit[4]=Low
+{0x03, 0x12,},
+{0x70, 0xbE,},	//Bit[0]=Low
 
 {0x03, 0x00,},
 {0x1e, 0x01,}, // frame update
@@ -17326,7 +17332,7 @@ static struct msm_camera_i2c_reg_conf sr352_Capture_2048_1536[] ={
 {0x03, 0x11,},
 {0x10, 0x1F,},	//Bit[4]=Hi
 {0x03, 0x12,},
-{0x70, 0x9F,},	//Bit[0]=Hi
+{0x70, 0xbF,},	//Bit[0]=Hi
 
 //------------------------------------------------//
 //TAP Capture Setting
@@ -17440,7 +17446,7 @@ static struct msm_camera_i2c_reg_conf sr352_Capture_2048_1536_01[] ={
 {0x03, 0x11,},
 {0x10, 0x1F,},	//Bit[4]=Hi
 {0x03, 0x12,},
-{0x70, 0x9F,},	//Bit[0]=Hi
+{0x70, 0xbF,},	//Bit[0]=Hi
 
 //------------------------------------------------//
 //TAP Capture Setting
@@ -19528,7 +19534,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 // 11 Page D-LPF (H/W)
 ///////////////////////////////////
 {0x03, 0x11,}, //11 page
-{0x10, 0x0f,}, //D-LPF ENB //DPC marker
+{0x10, 0x1f,}, //D-LPF ENB //DPC marker
 
 {0x12, 0x28,}, //20121120 character long line detection th
 {0x13, 0x2c,}, //20121120 character short line detection th
@@ -19556,10 +19562,10 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x2c, 0x08,}, //middle_h_th
 {0x2d, 0x08,}, //middle_l_th
 {0x2e, 0x06,}, //dark_th
-{0x2f, 0x10,}, //20121127 _DPC TH
-{0x30, 0x10,}, //20121127 _DPC TH
-{0x31, 0x10,}, //20121127 _DPC TH
-{0x32, 0x10,}, //20121127 _DPC TH
+{0x2f, 0x40,}, //20121127 _DPC TH
+{0x30, 0x40,}, //20121127 _DPC TH
+{0x31, 0x40,}, //20121127 _DPC TH
+{0x32, 0x40,}, //20121127 _DPC TH
 {0x41, 0x88,}, //GBGR Cut off //46
 
 ///////////////////////////////////
@@ -22346,7 +22352,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Outdoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xbf,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Outdoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -23224,7 +23230,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Indoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Indoor 1270 // Bayer Sharpness ENB add
+{0x25, 0xbf,}, //Indoor 1270 // Bayer Sharpness ENB add
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Indoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -24102,7 +24108,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark1 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark1 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -24980,7 +24986,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark2 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark2 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -27540,7 +27546,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 // 11 Page D-LPF (H/W)
 ///////////////////////////////////
 {0x03, 0x11,}, //11 page
-{0x10, 0x0f,}, //D-LPF ENB //DPC marker
+{0x10, 0x1f,}, //D-LPF ENB //DPC marker
 
 {0x12, 0x28,}, //20121120 character long line detection th
 {0x13, 0x2c,}, //20121120 character short line detection th
@@ -27568,10 +27574,10 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x2c, 0x08,}, //middle_h_th
 {0x2d, 0x08,}, //middle_l_th
 {0x2e, 0x06,}, //dark_th
-{0x2f, 0x10,}, //20121127 _DPC TH
-{0x30, 0x10,}, //20121127 _DPC TH
-{0x31, 0x10,}, //20121127 _DPC TH
-{0x32, 0x10,}, //20121127 _DPC TH
+{0x2f, 0x40,}, //20121127 _DPC TH
+{0x30, 0x40,}, //20121127 _DPC TH
+{0x31, 0x40,}, //20121127 _DPC TH
+{0x32, 0x40,}, //20121127 _DPC TH
 {0x41, 0x88,}, //GBGR Cut off //46
 
 ///////////////////////////////////
@@ -30358,7 +30364,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Outdoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xbf,}, //Outdoor 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Outdoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -31236,7 +31242,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x37,}, //Indoor 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x9f,}, //Indoor 1270 // Bayer Sharpness ENB add
+{0x25, 0xbf,}, //Indoor 1270 // Bayer Sharpness ENB add
 {0x26, 0x71,},
 {0x27, 0x1a,}, //Indoor 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -32114,7 +32120,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark1 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark1 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark1 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -32992,7 +32998,7 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_HD_01[] = {
 {0x22, 0x40,},
 {0x23, 0x36,}, //Dark2 1240 add 720p
 {0x24, 0x70,},
-{0x25, 0x81,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
+{0x25, 0xa1,}, //Dark2 1270 // Bayer Sharpness ENB add 720p
 {0x26, 0x71,},
 {0x27, 0x07,}, //Dark2 1271 //Bayer HPF Gain
 {0x28, 0x72,},
@@ -33716,6 +33722,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_30fps[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0x80,},	//Patch Weight Off B[6]
+{0x21, 0x20,},
+{0x22, 0x20,},
+{0x23, 0x20,},
 {0x36, 0x1e,},	//Max 30fps
 {0x37, 0x1e,},	//Max 30fps
 
@@ -33800,6 +33809,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_30fps_01[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0x80,},	//Patch Weight Off B[6]
+{0x21, 0x20,},
+{0x22, 0x20,},
+{0x23, 0x20,},
 {0x36, 0x1e,},	//Max 30fps
 {0x37, 0x1e,},	//Max 30fps
 
@@ -33875,6 +33887,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_modeOff[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0xc0,},	//Patch Weight On B[6]
+{0x21, 0x49,},
+{0x22, 0x53,},
+{0x23, 0x78,},
 {0x36, 0x08,},	//Max 8fps
 {0x37, 0x08,},	//Max 8fps
 
@@ -33954,6 +33969,9 @@ static struct msm_camera_i2c_reg_conf sr352_recording_50Hz_modeOff_01[] = {
 ///////////////////////////////////////////
 {0x03, 0xc7,},
 {0x15, 0xc0,},	//Patch Weight On B[6]
+{0x21, 0x49,},
+{0x22, 0x53,},
+{0x23, 0x78,},
 {0x36, 0x08,},	//Max 8fps
 {0x37, 0x08,},	//Max 8fps
 

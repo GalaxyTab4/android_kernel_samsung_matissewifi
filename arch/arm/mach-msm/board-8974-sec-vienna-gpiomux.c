@@ -548,6 +548,16 @@ static struct msm_gpiomux_config msm_hdmi_configs[] __initdata = {
 };
 
 #ifdef CONFIG_VIDEO_MHL_V2
+static struct gpiomux_setting gpio_i2c_config_9 = {
+	.func = GPIOMUX_FUNC_4,
+	/*
+	* Please keep I2C GPIOs drive-strength at minimum (2ma). It is a
+	* workaround for HW issue of glitches caused by rapid GPIO current-
+	* change.
+	*/
+	.drv = GPIOMUX_DRV_2MA,
+	.pull = GPIOMUX_PULL_NONE,
+};
 static struct gpiomux_setting mhl_suspend_cfg = {
 	.func = GPIOMUX_FUNC_4,
 	.drv = GPIOMUX_DRV_2MA,
@@ -558,12 +568,14 @@ static struct msm_gpiomux_config mhl_configs[] __initdata = {
 	{
 		.gpio      = 51, /* BLSP9 QUP I2C_DAT */
 		.settings = {
+			[GPIOMUX_ACTIVE]    = &gpio_i2c_config_9,
 			[GPIOMUX_SUSPENDED] = &mhl_suspend_cfg,
 		},
 	},
 	{
 		.gpio      = 52, /* BLSP9 QUP I2C_CLK */
 		.settings = {
+			[GPIOMUX_ACTIVE]    = &gpio_i2c_config_9,
 			[GPIOMUX_SUSPENDED] = &mhl_suspend_cfg,
 		},
 	},

@@ -12,6 +12,8 @@
 #endif
 
 #define LOW_LIGHT_LEVEL    0x40
+#define BURST_MODE_BUFFER_MAX_SIZE 128
+#define BURST_REG 0x0F12
 
 struct s5k4ecgx_userset {
     unsigned int metering;
@@ -26,6 +28,7 @@ struct s5k4ecgx_userset {
     unsigned int flash_mode;
     unsigned int lowLight;
     unsigned int is_touchaf;
+    unsigned int is_preflash;
 };
 
 struct s5k4ecgx_ctrl {

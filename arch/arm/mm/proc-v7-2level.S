@@ -299,9 +299,9 @@ ENTRY(cpu_v7_tima_set_pte_ext)
 	dsb
 	isb
 #endif
+#ifdef CONFIG_TIMA_RKP_DEBUG
 	ldr     r2, [r0]
 	cmp     r1, r2
-#ifdef CONFIG_TIMA_RKP_DEBUG
 	beq	2f     
 	stmfd	sp!, {r0}
 	ldr	r0, =0x3f80f221		@cmd_id=0x0f
@@ -315,10 +315,14 @@ ENTRY(cpu_v7_tima_set_pte_ext)
 	mcr     p15, 0, r0, c7, c6,  1
 	dsb
 	isb
+#else
+	mcr	p15, 0, r0, c7, c10, 1		@ flush_pte
+	dsb
+	isb
 #endif
+#ifdef CONFIG_TIMA_RKP_DEBUG
 	ldr     r2, [r0]
 	cmp     r3, r2
-#ifdef CONFIG_TIMA_RKP_DEBUG
 	beq	3f
 	stmfd	sp!, {r0}
 	ldr	r0, =0x3f80f221		@cmd_id=0x0f
@@ -335,7 +339,7 @@ ENTRY(cpu_v7_tima_set_pte_ext)
 ENDPROC(cpu_v7_tima_set_pte_ext)
 #endif
 
-#ifdef	CONFIG_TIMA_RKP_30
+#ifdef	CONFIG_TIMA_RKP
 	.global cpu_v7_set_pte_ext_proc_end
 #endif
 ENTRY(cpu_v7_set_pte_ext)
@@ -374,7 +378,7 @@ ENTRY(cpu_v7_set_pte_ext)
 	mcr	p15, 0, r0, c7, c10, 1		@ flush_pte
 #endif
 	mov	pc, lr
-#ifdef	CONFIG_TIMA_RKP_30
+#ifdef	CONFIG_TIMA_RKP
 cpu_v7_set_pte_ext_proc_end:
 #endif
 ENDPROC(cpu_v7_set_pte_ext)
@@ -419,7 +423,12 @@ ENDPROC(cpu_v7_set_pte_ext)
 	 * - \ttb0 and \ttb1 updated with the corresponding flags.
 	 */
 	.macro	v7_ttb_setup, zero, ttbr0, ttbr1, tmp
+#ifdef	CONFIG_TIMA_RKP_EMUL_CP15_INSTR 
+	ldr	r0, =0x3f805221
+	smc	#1
+#else 
 	mcr	p15, 0, \zero, c2, c0, 2	@ TTB control register
+#endif
 	ALT_SMP(orr	\ttbr0, \ttbr0, #TTB_FLAGS_SMP)
 	ALT_UP(orr	\ttbr0, \ttbr0, #TTB_FLAGS_UP)
 	ALT_SMP(orr	\ttbr1, \ttbr1, #TTB_FLAGS_SMP)

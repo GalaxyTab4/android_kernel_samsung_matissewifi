@@ -65,10 +65,12 @@ static int camera_check_event_status(struct v4l2_event *event)
 		(struct msm_v4l2_event_data *)&event->u.data[0];
 
 	if (event_data->status > MSM_CAMERA_ERR_EVT_BASE) {
-	    pr_err("%s : event_data->status failed!", __func__);
+		pr_err("%s : event_data status out of bounds\n",
+				__func__);
+		pr_err("%s : Line %d event_data->status 0X%x\n",
+				__func__, __LINE__, event_data->status);
 	    return -EFAULT;
 	}
-
 	return 0;
 }
 
@@ -603,6 +605,8 @@ static int camera_v4l2_open(struct file *filep)
 		    pr_err("%s : camera_check_event_status", __func__);
 		    goto post_fail;
 		}
+		/* Disable power colapse latency */
+		msm_pm_qos_update_request(CAMERA_DISABLE_PC_LATENCY);
 	} else {
 		rc = msm_create_command_ack_q(pvdev->vdev->num,
 			atomic_read(&pvdev->opened));
@@ -655,6 +659,8 @@ static int camera_v4l2_close(struct file *filep)
 
 	if (atomic_read(&pvdev->opened) == 0) {
 
+		/* Enable power colapse latency */
+		msm_pm_qos_update_request(CAMERA_ENABLE_PC_LATENCY);
 		camera_pack_event(filep, MSM_CAMERA_SET_PARM,
 			MSM_CAMERA_PRIV_DEL_STREAM, -1, &event);
 
