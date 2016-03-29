@@ -52,7 +52,7 @@
 /*#include <linux/err.h>*/
 #include <linux/regulator/consumer.h>
 
-#include <zinitix_touch.h>
+#include "zinitix_touch.h"
 #include <linux/input/mt.h>
 #include <linux/of_gpio.h>
 
