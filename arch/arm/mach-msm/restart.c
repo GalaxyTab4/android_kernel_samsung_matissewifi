@@ -43,6 +43,10 @@
 #include "timer.h"
 #include "wdog_debug.h"
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+#include <asm/kexec.h>
+#endif
+
 #define WDT0_RST	0x38
 #define WDT0_EN		0x40
 #define WDT0_BARK_TIME	0x4C
@@ -509,6 +513,36 @@ static int __init msm_pmic_restart_init(void)
 
 late_initcall(msm_pmic_restart_init);
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+static void msm_kexec_hardboot_hook(void)
+{
+#ifdef CONFIG_RESTART_REASON_DDR
+	unsigned int save_restart_reason;
+#endif
+
+#ifdef CONFIG_SEC_DEBUG
+	if (!restart_reason)
+		restart_reason = ioremap_nocache((unsigned long)(MSM_IMEM_BASE \
+							+ RESTART_REASON_ADDR), SZ_4K);
+#endif
+	set_dload_mode(0);
+
+	// Set PMIC to restart-on-poweroff
+	pm8xxx_reset_pwr_off(1);
+
+	__raw_writel(0x12345678, restart_reason);
+
+#ifdef CONFIG_RESTART_REASON_DDR
+	if(restart_reason_ddr_address) {
+		 save_restart_reason = __raw_readl(restart_reason);
+		/* Writting NORMAL BOOT magic number to DDR address*/
+		__raw_writel(save_restart_reason, restart_reason_ddr_address);
+		printk(KERN_NOTICE "%s: writting 0x%x to DDR restart reason address \n", __func__,__raw_readl(restart_reason_ddr_address));
+	}
+#endif
+}
+#endif
+
 static int __init msm_restart_init(void)
 {
 #ifdef CONFIG_MSM_DLOAD_MODE
@@ -534,6 +568,10 @@ static int __init msm_restart_init(void)
 
 	if (scm_is_call_available(SCM_SVC_PWR, SCM_IO_DISABLE_PMIC_ARBITER) > 0)
 		scm_pmic_arbiter_disable_supported = true;
+
+#ifdef CONFIG_KEXEC_HARDBOOT
+	kexec_hardboot_hook = msm_kexec_hardboot_hook;
+#endif
 
 	return 0;
 }
